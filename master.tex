@@ -1,0 +1,275 @@
+\documentclass[12pt,oneside,bibtotoc,liststotoc]{scrbook}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[nenglish,english]{babel}
+\usepackage{a4wide}
+\usepackage{parskip}
+\usepackage[bookmarks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[right]{eurosym}
+\usepackage{amsmath}
+\usepackage[toc,page]{appendix}
+\usepackage{todonotes}
+\usepackage{acronym}
+
+\usepackage[numbers]{natbib}
+\DeclareUnicodeCharacter{2192}{ to}
+
+\usepackage{listings}
+
+\usepackage{lstautogobble}
+\usepackage[edges]{forest}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+\lstdefinelanguage{json}{
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    tabsize=2,
+    lineskip={-1.0pt},
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    literate=
+      *{:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+\lstdefinelanguage{rdf}{
+    basicstyle={\footnotesize\ttfamily},
+    lineskip={-1.0pt},
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    tabsize=2,
+    backgroundcolor=\color{background},
+    keywordstyle={\bfseries\color{Blue}},
+    commentstyle={\color{Red}\textit},
+    stringstyle=\color{Magenta},
+    morekeywords={ql,rml,rr,schema},
+    moredelim=*[s][\ttfamily]{:}{:} %Newly added line
+}
+\lstdefinelanguage{xml}{
+    basicstyle={\footnotesize\ttfamily},
+    lineskip={-1.0pt},
+    numbers=left,
+    tabsize=2,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    keywordstyle={\bfseries\color{Blue}},
+    commentstyle={\color{Red}\textit},
+    stringstyle=\color{Magenta},
+    morekeywords={ServiceProvider,Document,Address,Service,Product,Occupancy,Price},
+    moredelim=*[s][\ttfamily]{:}{:} %Newly added line
+}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\lstset{
+	basicstyle=\ttfamily\small,
+	showspaces=false,
+	numbers=left,
+	breaklines = true,
+	showstringspaces=false
+}
+
+\pagestyle{headings}
+\setlength{\textwidth}{15cm}
+\setlength{\textheight}{22.5cm}
+\setlength{\oddsidemargin}{1cm}
+\setlength{\evensidemargin}{0cm}
+\begin{document}
+
+
+\thispagestyle{empty}
+\begin{center}
+\LARGE{Leopold-Franzens Universität Innsbruck\\
+Faculty for Mathematics, Computer Science and Physics}\\[3ex]
+\large{Institut for Physics}\\[2ex]
+\large{Theoretical Plasma Physics}
+\end{center}
+\medskip
+
+\begin{center}
+\includegraphics[width=3cm]{Logo}
+\vspace{1.5cm}
+
+\textbf{\LARGE{Masterthesis}}
+\medskip\par
+\textbf{\normalsize{zur Erreichung des akademischen Grades}} \\[3ex]
+\textbf{\Large{Master of Science}}
+\vspace{2cm}
+
+\textbf{\Large{Title of the work}}
+\bigskip\par
+von \par
+\large{Jascha Riedel}\\
+(Matr.-Nr.: 0123456789)
+\end{center}
+\vspace{1cm}
+
+\begin{tabular}{ll}
+  Submission Date:  & \today \\
+  Supervisor: & Alexander Kendel \\
+\end{tabular}
+
+\newpage
+
+\vspace*{5cm}
+
+\begin{center}
+\LARGE{Eidesstattliche Erklärung}\\
+\end{center}
+\vspace{1cm}
+
+
+\begin{quote}
+\emph{Ich erkläre hiermit an Eides statt durch meine eigenhändige Unterschrift, dass ich die vorliegende Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet habe. Alle Stellen, die wörtlich oder inhaltlich den angegebenen Quellen entnommen wurden, sind als solche kenntlich gemacht.
+\\Ich erkläre mich mit der Archivierung der vorliegenden Bachelorarbeit einverstanden.
+}
+\end{quote}
+\vspace{2.5cm}
+
+\begin{flushleft}
+\begin{tabular}{lll}
+Ort und Datum: & & \rule{7cm}{0.4pt}\\[7ex]
+Unterschrift: & & \rule{7cm}{0.4pt}
+\end{tabular}
+\end{flushleft}
+
+\thispagestyle{empty}
+
+\renewcommand{\baselinestretch}{1.00}\normalsize
+
+\tableofcontents
+\setcounter{page}{1}
+\pagenumbering{Roman}
+\listoffigures
+\renewcommand{\baselinestretch}{1.5}\normalsize
+
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\chapter*{Zusammenfassung}
+\addcontentsline{toc}{chapter}{Zusammenfassung}
+Deutsches Abstract
+
+\begin{otherlanguage*}{english}
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+Englisches Abstract
+\end{otherlanguage*}
+
+
+
+
+
+\chapter{Introduction}
+
+\chapter{Theory Physics}
+
+\section{Full-F Gyrofluid Equations}
+The following section describes a reduced set of equations derived from the Full-F Gyrofluid Equations published by J. Madsen \cite{doi:10.1063/1.4813241}.
+\todo[]{Find out where}The simulation is currently limited to the Isothermal Full-F Gyrofluid Equations as they have been derived in
+
+\section{Coordinate System}
+\input{coordinateSystem.tex}
+\section{Isothermal 3D Full-F Gyrofluid Equations}
+\label{sec:isothermalequations}
+\input{isothermal-full-f-gyrofluid-equations.tex}
+
+
+\section{Fluid Dynamics}
+
+
+\chapter{Theory Numerics}
+\section{Discretization}
+\input{discretization.tex}
+\section{Boundary Values}
+\input{BoundaryValues.tex}
+\section{Numerical Methods}
+\input{numericalMethods.tex}
+
+\chapter{Theory Computer Science}
+All the code relevant for the simulation is written in C++. This allows high performance and an easy integration of external libraries (FFTW etc.). Also the code may be compiled for a specific architecture giving the compiler the opportunity to optimize in different ways.\newline
+The complete project is saved on the University git server and can be found at \href{https://git.uibk.ac.at/csat8630/t3g-cmake}{https://git.uibk.ac.at/csat8630/t3g-cmake}
+.
+
+\section{Build System}
+\input{buildSystem.tex}
+\section{Programming paradigm}
+\input{programmingParadigm.tex}
+\section{Optimization Methods}
+\input{optimizationMethods.tex}
+
+
+\chapter{Code description}
+\section{Structural Overview}
+\section{Components}
+\section{SOR-Solver Implementation}
+\label{sec:sor-solver-impl}
+
+
+\chapter{Performance Optimizations}
+\section{OpenMP}
+\section{Nvidia-CUDA}
+\section{Scaling}
+\section{Evaluation}
+\subsection{Scaling on CPU only}
+\subsection{Scaling on CPU/GPU systems}
+
+
+\chapter{Polarization Equation Linearization}
+\section{Four different Linearizations}
+\section{Influence on Blob-Speed}
+\section{Influence on Zonal-Flow}
+
+
+\chapter{Conclusion}
+
+
+
+
+\chapter{Literatur Recherche}
+
+
+\newpage
+\chapter{Zusammenfassung und Ausblick}
+
+\newpage
+
+%
+% agsm in der uibk vorlage
+%
+% ^.
+
+% \bibliographystyle{agsm} %apalike
+\bibliographystyle{unsrt} %apalike
+\bibliography{literatur}
+\chapter{Acronyms}
+\input{acronyms.tex}
+
+
+
+\end{document}

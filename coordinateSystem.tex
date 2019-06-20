@@ -1,0 +1,9 @@
+A Flux-Tube coordinate system is employed. This is justified by the \todo{Ref}\textit{Frozen Flux Hypothesis}. 
+The coordinate system in the simulation code has the letters $z$ $x$ and $y$. They map to the following coordinates as they are introduced in \cite{doi:10.1063/1.1335832}.
+\begin{itemize}
+    \item $x = r - a$   (i. e. polodial distance)
+    \item $y = q\theta - \xi$ (i. e. shear shifted (by $q\theta$) polodial angle)
+    \item $z = \theta$ (i. e. torodial angle/flux surfaces)
+\end{itemize} 
+where $a:=minor\, Radius$, $\xi \in [0,2\pi]$, $\theta \in [-\pi,\pi]$ and $\theta = 0$ is the magnetic surface at the \textit{outboard-midplane}.\\
+Thus if we chose $z=[0,8]$ we have eight $x-y$ simulation planes evenly distributed around the torus following the magnetic field lines (i. e. field-aligned).The deformation of the $x-y$ planes is accounted for by the shift-parameter which influences the parallel derivatives.

@@ -1,0 +1,128 @@
+The equations are stated as they are. A mathematical derivation can be found in \cite{HeldDisseration}. It is essentially a set of six equations. Two density equations (\autoref{eq:electron_density}, \autoref{eq:ion_density}), two velocity equations (\autoref{eq:electron_velocity}, \autoref{eq:ion_velocity}), the polarization equation (\autoref{eq:polarization}) and a closure approximation for the gyro averaging operator $\Gamma_1$.
+
+\subsection{Density Equations}
+
+\begin{align}
+    \partial_t n_e &=
+    -\delta^{-1} \left[\Tilde{n}_e, \phi \right]_{\perp}
+    - \mathcal{K}(\Tilde{n}_e)
+    - \mathcal{K}(\phi)
+    - \frac{1}{B(z)}\nabla_\parallel (v_{e\parallel} n_e)
+    + \mu_\parallel \nabla_\parallel^2\Tilde{n}_e
+    - \mu_\perp \Delta^2_\perp\Tilde{n}_e \label{eq:electron_density}
+    \\
+    \partial_t N_i &=
+    -\delta^{-1} \left[\Tilde{N}_i, \psi \right]_{\perp}
+    - \mathcal{K}(\Tilde{N}_i)
+    - \mathcal{K}(\Tilde{\psi_i})
+    - \frac{1}{B(z)}\nabla_\parallel (v_{i\parallel} N_i)
+    + \mu_\parallel \nabla_\parallel^2\Tilde{N}_i
+    - \mu_\perp \Delta^2_\perp\Tilde{N}_i \label{eq:ion_density}
+\end{align}
+
+where
+
+\begin{align}
+    \mathcal{K}(\lambda) &= (\kappa_x \partial_x + \kappa_y \partial_y)\,\lambda\\
+    \kappa_x &= mcv \cdot sin(\theta)\\
+    \kappa_y &= mcv \cdot cos(\theta) + shear\\
+    \left[A, B\right]_\perp &= \partial_x A \cdot \partial_y B - \partial_x B \cdot \partial_y A\\
+    \nabla_\parallel \lambda &= \Tilde{\partial_{z}} \lambda
+\end{align}
+\begin{itemize}
+    \item $\Tilde{\partial_{z}}$ represents the shear-shifted derivative in z-direction.
+    \item $\Tilde{X} := log(X)$
+    \item $B(z) := $ Magnetic-Flux in Z-Plane
+\end{itemize}
+
+
+\newline
+\autoref{eq:electron_density} represents the evolution of the electron density field.
+\autoref{eq:ion_density} represents the evolution of the density of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected.\todo{Find a reference or write equations down} \newline
+The last two terms in both equations are needed for numerical stability of our schemes but may be regarded as sources and sinks. 
+
+
+\subsection{Parallel Velocity Equations}
+The velocity equations are restricted to the parallel direction which follows from the "frozen-flux-theorem" which states that particles motion is strongly restricted to the magnetic field lines \todo{Ref}. Thus it is convenient to align the parallel direction ($z$) to the magnetic flux.
+
+
+\begin{align}
+    \alpha_e &=  -\delta^-1 \left[v_{e\parallel}, \phi_\perp\right]
+    - 2\tau_e \mathcal{K}( v_{e\parallel})
+    - 2\tau_e^2 \mathcal{K}(\Tilde{n}_e)
+    - \tau_e \mathcal{K}( \phi)
+    - \nabla_\parallel (\phi + \tau_e n_e)
+    - \hat{c}\, \mathrm{J}
+    + \mu_\parallel \nabla_\parallel^2\Tilde{\alpha}_e 
+    - \mu_\perp \Delta^2\Tilde{\alpha}_e \label{eq:electron_velocity} \\
+    \alpha_i &= -\delta^-1  \left[v_{i\parallel}, \phi_\perp\right]
+    - 2\tau_i \mathcal{K}(v_{i\parallel})
+    - 2\tau_i^2 \mathcal{K}(N_i)
+    - \tau_i \mathcal{K}(\psi)
+    - \nabla_\parallel (\psi + \tau_i N_i)
+    - \hat{c}\, \mathrm{J}
+    + \mu_\parallel\nabla_\parallel^2\Tilde{\alpha}_i 
+    - \mu_\perp \Delta^2\Tilde{\alpha}_i \label{eq:ion_velocity}
+\end{align}
+
+where ($s$ denotes electron and ion species)
+
+\begin{itemize}
+    \item $\alpha_s := \mu_s \hat{\epsilon} \cdot v_{s\parallel} + \hat{\beta} \cdot A_{\parallel}$
+    \item $\mathrm{J} := \sum_s z_s \cdot n_s \cdot v_{s\parallel}$
+    \item $z_s :=$ charge of species particles (i. e. -1 for electrons)
+\end{itemize}
+
+As a simplification we assume $\hat{\beta} \approx 0$ and thus Amperes Law is not stated here. Nonetheless to closely represent the equations implemented in the simulation code the $\alpha$-notation is used here.
+
+\subsection{Polarization Equation}
+
+\begin{align}
+    \nabla \cdot \left( \sum_s \mu_s n_s \right) \nabla \phi &= z_e n_e + \sum_i z_i \, \cdot \, N_i \label{eq:polarization}
+\end{align}
+The polarization equation connects the individual species. On the right hand side essentially stands the (gyro-averaged) charge distribution. \todo{Write done which section} The left-hand side contains finite-lamor-radius (FLR) effects via the non-linearity which will be elaborated on in.
+
+\subsection{Gyro-Averaging Operator}
+\begin{align}
+    \Gamma_1 = \left(1- \frac{1}{2} \rho^2 \nabla_\perp^2\right)^{-1}
+\end{align}
+
+
+\subsection{Connection to Navier-Stokes}
+\label{sec:connection_navier_stokes}
+
+The structure of the density and velocity equations closely resembles that of the incompressible navier-stokes equations. The form given here is taken from \cite{KARNIADAKIS1991414} equation \textit{1.a}.
+
+\begin{align}
+    \partial_t \Psi &= -\nabla p + \mu \mathbf{L}(\Psi) + \mathbf{N}(\Psi)\\
+    \mathbf{L}(\Psi):&= \nabla^2\Psi = \nabla(\nabla\cdot\Psi)-\nabla \times (\nabla \times \Psi)\\
+    \mathbf{N}(\Psi):&= - \frac{1}{2}\left[\Psi \cdot \nabla \Psi + \nabla(\Psi \cdot \Psi)\right]
+\end{align}
+
+There are some transformations necessary to see the connection. We start with the incompressible navier stokes equations.
+
+\begin{align}
+    \partial_t v &= - \nabla p - v \cdot \nabla v + \Delta v
+\end{align}
+
+In the two-dimensional case this transformation
+\begin{align}
+    v_x &= \partial_y \psi \\
+    v_y &= -\partial_x \psi \\
+    \phi &= \Delta \psi
+\end{align}
+results in the following pressure-free formulation of the navier-stokes equations.
+
+\begin{align}
+    \partial_t \phi &= \left( \partial_x \psi \partial_y \phi - \partial_y \psi \partial_x \phi  \right) + \Delta \phi\\
+    \partial_t \phi &= - \left[\phi, \psi\right] + \Delta \phi
+\end{align}
+
+Now we can compare this to the moment equations written down early and identify the streamline potential $\psi$ with the electric potential and $\phi$ with density or velocity. This only serves as motivation to use terminology from flow equations. We can now define turbulent and zonal flow in the following way:
+
+\begin{align}
+    \Gamma(z) &= \partial_y \phi_e :\, Turbulent\,Flow\\
+    \Lambda(z) &= \partial_x \phi_e :\, Zonal\,Flow
+\end{align}
+
+Here the turbulent flow gives us information on how much of your quantities is transported outwards into the SOL and the zonal flow represents transport parallel to the separatrix.

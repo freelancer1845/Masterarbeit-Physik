@@ -1,0 +1,51 @@
+Since a simulation is inherently a stateful application Object-Oriented-Programming is mostly used where the equations and solvers are modeled as objects containing properties \textit{(parameters, last result...)} and methods for iterating or solving. This strictly enforces separation of concern where each object only encapsulate the parameters it needs for its evaluation. Global objects like the \textbf{global Current $\vec{J}$} are passed around as parameters.\newline
+As an example the interface of the object implementing the electron/ion density equation for the 3d-Isothermal model is presented:
+
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+    commentstyle=\color{green}, % comment color
+    keywordstyle=\color{blue}, % keyword color
+    stringstyle=\color{red} % string color
+}
+\begin{lstlisting}
+template <typename T>
+class Density3d {
+ private:
+  Domain::Regular::SOL3D<T>& domain;
+  Species<T>& m_Species;
+
+  core::Matrix<T> m_Rhs;
+  core::Matrix<T> m_vTimesNDivByB;
+  core::Matrix<T> m_Damping;
+
+  T m_DeltaInv;
+  T m_NuParallel;
+  T m_NuPerpendicular;
+  T m_ViscocityDampingFactor;
+
+  Time::KarniadakisStepper<T> m_Stepper;
+
+ public:
+  Density3d(Domain::Regular::SOL3D<T>& domain, Species<T>& species,
+            const T m_DeltaInv, const T m_NuParallel,
+            const T m_NuPerpendicular, const T viscocityDampingFactor);
+
+  void initialize();
+
+  void iterate(const core::Matrix<T>& PDEL);
+
+  void pushNewValues(const T deltaT);
+
+ private:
+  void updateVTimesNDivByB();
+};
+\end{lstlisting}
+
+Here Lines 4 and 5 define on which \textit{domain} (grid points, magnetic configuration...) the density equation is solved and for what species, where the \textit{Species} class contains all the properties of a species as well as its attached fields (i. e. density, velocity..).\newline
+Lines 7 to 9 define three matrices necessary for intermediate results and lines 11 to 14 contain variables that arise in the equation itself.  In line 16 the time stepper that is used is defined. Since we may want to switch the time stepper at a late time it is encapsulated in its own object.\newline
+The public interface defines a single constructor, taking as parameters all the necessary properties, and three methods. The \textit{initialize} method only needs to be called once, mainly to initialize the time stepper (define previous values).
+The functions \textit{iterate} and \textit{pushNewValues} are the workhorses of the object. The first one calculates the next iteration step but doesn't update the density. This allows for better parallelization since until now no variables not directly belonging to the object have been written to. The second function updates the species density using the time stepper.\newline
+The advantage of this programming paradigm is the encapsulation and separation of code allowing for easier debugging and faster updates. We can now easily swap the time stepper or implement the equation in a completely different way without changing all the surrounding code since the interface is relatively easily kept constant. It is also more apparent what parts of code interact with each other.
+

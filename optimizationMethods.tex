@@ -1,0 +1,37 @@
+\subsection{For Loops}
+A common pattern in the simulation is to iterate over all the grid points.
+This is done using three for-Loops.
+\begin{lstlisting}
+for (int z = domain.g_z; z < domain.n_z + domain.g_z; z++) {
+  for (int x = domain.g_x; x < domain.n_x + domain.g_x; x++) {
+    for (int y = domain.g_y; y < domain.n_y + domain.g_y; y++) {
+       ...
+    }
+  }
+}
+\end{lstlisting}
+Usually the outer loops only has a few iterations $\sim 8$ and the inner ones have 100-1000 iterations. 
+If there are no data dependencies between iterations the most inner loop can be vectorzied by the compiler quite easily. This is a simple straight forward optimization where one usually swaps memory space (which nowadays is available) against computation speed. For example if we wanted to approximate the derivative using a forward difference scheme a loop like this
+\begin{lstlisting}
+for (int x = 0; x < n_x - 1; x++) {
+  array[x] = (array[x + 1] - array[x]) / h_x    
+}
+\end{lstlisting}
+where the memory is reused, cannot be vectorized whereas if we save the result in a second array this would not be a problem for the compiler.
+\subsection{OpenMP}
+Another simple way to parallelize such loops is via OpenMP and its \textit{worksharing constructs}. This mainly applies to the outer loop since worksharing to threads is only effective if the shared work is heavy enough.
+\begin{lstlisting}
+#pragma omp parallel for
+for (int z = domain.g_z; z < domain.n_z + domain.g_z; z++) {
+  for (int x = domain.g_x; x < domain.n_x + domain.g_x; x++) {
+    for (int y = domain.g_y; y < domain.n_y + domain.g_y; y++) {
+       ...
+    }
+  }
+}
+\end{lstlisting}
+Sometimes it might even be worth to use OpenMP to parallelize the loop over the x-coordinate especially if the resolution in y-direction is large enough (\textgreater 1000 grid points).
+
+\subsection{GPU Offloading using CUDA}
+To further optimize the code one can move some of the calculation to the graphics card. The processing unit is optimized for missive parallelism and for example the SOR-Solver can be implemented effectively. The downside to this optimization is that its much more complex to write code. Two main factors play a role. The first one is that we lose unified memory. This requires us to spend some work on transferring data from main memory to the GPU memory and back cluttering the code and making it hard to understand for someone not familiar with CUDA. The second key factor is that the code on the GPU is not sequential anymore. It is executed in parallel by many threads which makes it difficult to write readable code.\newline
+Nevertheless it can be very effective as will be shown later.

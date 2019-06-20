@@ -1,0 +1,96 @@
+There are three different main problems to solve in this simulation.
+\begin{itemize}
+    \item Derivatives (parallel and perpendicular)
+    \item Time integration
+    \item Poisson/Laplace equation solving
+\end{itemize}
+
+\subsection{Derivatives}
+Since a simple grid is chosen for discretization simple finite-differences schemes are used for the derivatives and the arakawa scheme for the poisson brackets \cite{arakawa}.\\
+\textit{Coordinates not involved are omitted for readability. $T_{i + 1} = T_i + h_T$ for T in $\{z, x, y\}$}
+\begin{itemize}
+    \item Perpendicular Gradient $\nabla_{\perp} = \vec{n}\cdot\nabla$\\
+     \begin{small}
+        \begin{equation}
+            \nabla_{\perp} f(z, x_i,y_j) \approx \frac{f(x_{i + 1}, y) - f(x_{i - 1}, y)}{h_x} + \frac{f(x, y_{j + 1}) - f(x, y_{j-1})}{h_y} + O(h_x) + O(h_y)
+        \end{equation}
+    \end{small}
+    \item Parallel Gradient $\nabla_{\parallel} = \vec{e_z}\cdot\nabla = \partial_z$\\
+    \begin{equation}
+        \nabla_{\parallel} f(z_i,x,y) \approx \frac{-f(z_{i+2}) + 8 \cdot f(z_{+1}) - 8 \cdot f(z_{-1}) + f(z_{-2})}{12 \cdot h_z} + O(h_z^4)
+    \end{equation}
+    \item Second parallel derivative $\partial_z^2$\\
+    \begin{equation}
+           \partial_z^2f(z_i,x,y) \approx \frac{f(z_{i+1})-2\cdot f(z_i)+ f(z_{i-1})}{h_z^2} + O(h_z)
+    \end{equation}
+    \item Fourth derivative in perpendicular direction $\nabla_\perp \cdot \nabla_\perp$\\
+    \begin{footnotesize}
+    \begin{equation}
+    \begin{split}
+    \nabla_\perp^2f(z,x_i,y_j) \approx \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\ + \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\  + O(h_x^2) + O(h_x^2)
+    \end{split}
+    \end{equation}
+    \end{footnotesize}
+    \item Poisson Bracket $[f(x,y),g(x,y)]_\perp = \partial_x f \partial_y g - \partial_y f \partial_x g$
+\end{itemize}
+
+\subsection{Time Integration - Karniadakis Scheme}
+The time stepping is implemented using a Karniadakis scheme of 3rd order \cite{KARNIADAKIS1991414}.
+It is applied to the density and velocity equations described in \autoref{sec:isothermalequations}.
+In our case it iterates an equation of form
+\begin{equation}
+    \partial_t \Phi = F(\Phi) - \lambda_s
+\end{equation}
+where $\lambda_s$ represents for source and sink terms and $n$ denotes the time step in the following way :
+\begin{equation}
+\begin{split}
+    \Phi^{n + 1} = \quad &\frac{18}{11} \Phi^{n} - \frac{9}{11} \Phi^{n-1} + \frac{2}{11}  \Phi^{n-2}\\
+     + &\frac{6}{11}\Delta t \cdot (3 \cdot F(\Phi)^{n+1} - 3 \cdot F(\Phi)^{n} + F(\Phi)^{n-1} + \lambda_s)
+\end{split}
+\end{equation}
+This scheme has been shown to be stable at high Courant-Friedrichs-Lewy (CFL) number for the incompressible navier-stokes equation \cite{KARNIADAKIS1991414}.
+
+\subsection{Poisson Equation solver}
+There are two poisson-like equations to solve. The frist one is necessary to apply the padé-approximation of the gyro-averaging operator and is solved using a fourier decomposition and the second one is the polarization equation as described in \autoref{sec:isothermalequations} using a \ac{SOR} gauss-seidel-iterator.
+
+\subsubsection{Gyro-Averaging - Fourier Solver}
+The gyro-averaging operation has the form:
+\begin{equation}
+    \alpha \Delta U(x, y) = F(x, y)
+\end{equation}
+This solved using Fourier-Method as it is described here \cite{fft-poisson}. To achieve a periodic function in x-direction the domain is extended in this direction before computation. The transformation rule is:
+\begin{equation}
+\begin{split}
+    t\colon [n_x, n_y] & \to [4 \cdot n_x, n_y]\\
+    f(x, y) &\mapsto \begin{cases}
+    2 f(0, y) - f(n_x - x, j) & x \leq n_x\\
+    f(x - n_x, j) & n_x < x \leq 2n_x\\
+    f(3n_x-x,j) & 2n_x < x \leq 3n_x \\
+    2 f(0, j) - f(x - 3n_x, j) & else
+    \end{cases}
+\end{split}
+\end{equation}
+\todo{Ref}This artificially creates a periodic function which should reduce numerical artifacts from the solver.
+
+\subsubsection{Polarization Equation - \ac{SOR} Gauss Seidel Iterator}
+The polarization equation (\autoref{eq:polarization}) has the form:
+\begin{equation}
+    \nabla\left( A(x, y) \nabla U(x, y)\right) = F(x, y)
+\end{equation}
+The discretization is presented here \cite{DielectricPoisson}. The problem solved in the reference evolves from the variable dielectrica poisson equation which has similar form. To solve the linear system a \ac{SOR} iterator is implemented which is further described here \cite{SORPaper}. Implementation details are presented in \autoref{sec:sor-solver-impl}.
+
+The nonlinear laplace operator is discretized in the following way:
+\begin{equation}
+\begin{split}
+    (\nabla A \nabla U)_{i,j} = \quad &
+    \mathcal{A}_{i, j}(1, 0) \cdot U_{i + 1, j} \\
+    + &\mathcal{A}_{i, j}(-1, 0) \cdot U_{i - 1, j}\\
+    + &\mathcal{A}_{i, j}(0, 1) \cdot U_{i, j + 1} \\
+    + &\mathcal{A}_{i, j}(0, -1) \cdot U_{i, j - 1} \\
+    - &\left(\mathcal{A}_{i, j}(1, 0) + \mathcal{A}_{i, j}(-1, 0) + \mathcal{A}_{i, j}(0, 1) + \mathcal{A}_{i, j}(0, -1)\right) \cdot U_{i, j}
+\end{split}
+\end{equation}
+with
+\begin{equation}
+    \mathcal{A}_{i,j}(x, y) = \frac{A_{i + x, j + y} + A_{i, j}}{2}
+\end{equation}

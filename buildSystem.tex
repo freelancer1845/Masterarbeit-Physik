@@ -1,0 +1,50 @@
+Since the project is rather large (\textgreater 10000 Lines of Code spread over $\sim 100$ Files) a sophisticated build system is required. A typical choiche for C++ is CMake. \todo{Ref?}\\
+The components of the simulation are divided into CMake-Targets. There are multiple library targets which encapsulate derivatives, algorithms, helper methods and model equations as well as a few executable targets. One of these executable targets will be the desired simulation.\newline
+The project folder structure looks like this:\newline
+
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[t3g-cmake
+ [extern \textit{Containing External Libraries}] 
+ [src
+   [algorithms
+     [derivatives \textit{finite differences schemes etc.}]
+     [poisson \textit{FFTW and SOR Solver}]
+     [time \textit{Karniadakis Time Stepper}]
+   ]
+   [core \textit{Log, Matrix-Class, HDF5 Output}]
+   [domain \textit{Shear Shifted Grid Domain}]
+   [initialization]
+   [models
+     [isothermal \textit{Equations implementations}]
+     [simulations \textit{Simulation Runner}]
+   ]
+   [performanceTests \textit{Small programs to evaluate various optimizations}]
+   [plotting \textit{API for live plotting}]
+   [sorSolverCuda \textit{Cuda Implementation of SOR Solver}]
+ ]
+ [t3g-config \textit{Default config files}]
+ [plotter \textit{Small python program for data visualization}]
+]
+\end{forest}
+
+Each folder that has C++ code has its own CMakeLists.txt where different build properties and the targets itself are defined (for further information about the CMake code refer to the documentation).\newline
+The git project contains a \textit{Readme} file in which the build process is further described.
