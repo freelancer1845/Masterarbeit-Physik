@@ -1,3 +1,8 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
 \subsection{For Loops}
 A common pattern in the simulation is to iterate over all the grid points.
 This is done using three for-Loops.
@@ -35,3 +40,6 @@ Sometimes it might even be worth to use OpenMP to parallelize the loop over the 
 \subsection{GPU Offloading using CUDA}
 To further optimize the code one can move some of the calculation to the graphics card. The graphics processing unit is optimized for massive parallelism and for example the SOR-Solver can be implemented effectively. The downside to this optimization is that the code becomes very complex. Two main factors play a role. The first one is that we lose unified memory. This requires us to spend some work on transferring data from main memory to the GPU memory and back, cluttering the code and making it hard to understand for someone not familiar with CUDA. The second key factor is that the code on the GPU is not sequential anymore. It is executed in parallel by many threads which makes it difficult to write readable code.\newline
 Nevertheless it can be very effective as will be shown later.
+
+
+\end{document}

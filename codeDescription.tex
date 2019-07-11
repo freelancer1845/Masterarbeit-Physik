@@ -1,3 +1,8 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
 \section{Structural Overview}
 The execution contains three distinct steps where the last two run in parallel. At first the simulation must be initialized using a provided parameters file or restarting from previous data. Afterwards the actual simulation starts. In this context a single iteration contains these steps:
 \begin{enumerate}
@@ -138,3 +143,5 @@ The repository contains a small python application to visualize data. It uses \t
     python main.py
 \end{quote}
 in a suitable environment. The application creates 2D heatmaps of the densities, parallel velocities, potential and vorticity as well as radial profiles. Further more it can plot the energetics output.
+
+\end{document}

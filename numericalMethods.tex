@@ -1,3 +1,7 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
 There are three different main problems to solve in this simulation.
 \begin{itemize}
     \item Derivatives (parallel and perpendicular)
@@ -47,7 +51,7 @@ In our case it iterates an equation of form
     \partial_t \Phi = F(\Phi) - \lambda_s
 \end{equation}
 where $\lambda_s$ represents for source and sink terms and $n$ denotes the time step in the following way :
-\begin{equation}
+\begin{equation}\label{eq:karnidakis-scheme}
 \begin{split}
     \Phi^{n + 1} = \quad &\frac{18}{11} \Phi^{n} - \frac{9}{11} \Phi^{n-1} + \frac{2}{11}  \Phi^{n-2}\\
      + &\frac{6}{11}\Delta t \cdot (3 \cdot F(\Phi)^{n+1} - 3 \cdot F(\Phi)^{n} + F(\Phi)^{n-1} + \lambda_s)
@@ -84,3 +88,5 @@ The polarization equation (\autoref{eq:polarization}) has the form:
     \nabla\left( A(x, y) \nabla U(x, y)\right) = F(x, y)
 \end{equation}
 The discretization is presented here \cite{DielectricPoisson}. The problem solved in the reference evolves from the variable dielectrica poisson equation which is of a simlar form. To solve the linear system a \ac{SOR} iterator is implemented which is further described here \cite{SORPaper}. Implementation details are presented in \autoref{sec:sor-solver-implementation}.
+
+\end{document}

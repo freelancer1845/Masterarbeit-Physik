@@ -1,3 +1,9 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
+
 To treat the domain boundaries ghost cells are implemented. Currently the simulation needs two ghost cells into every direction. The memory and performance impact is discussed in the \textit{Computer Science} section.
 \subsection{X-Direction}
 In X-Direction (i. e. polodial distance) Dirichlet boundaries are implemented. This is achieved using the ghost cells and simply setting them once. To reduce gradients at the boundaries further actions have to be taken at the x boundaries (\autoref{sec:components-external}).
@@ -15,3 +21,5 @@ To simulate \todo{Ref-Ribero-Scott} divertors outside the separatrix so called \
     \caption{Visualization of tokamak with separatrix and limiter}
     \label{fig:boundary_conditions_z}
 \end{figure}
+
+\end{document}

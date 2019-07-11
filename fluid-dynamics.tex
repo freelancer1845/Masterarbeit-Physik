@@ -1,3 +1,8 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
 \subsection{Connection to Navier-Stokes}
 \label{sec:connection_navier_stokes}
 
@@ -30,7 +35,7 @@ Now we can compare this to the moment equations written down early and identify 
 
 Here the turbulent flow gives us information on how much of our quantities is transported outwards into the SOL and the zonal flow represents transport parallel to the separatrix.
 
-\subsection{Simulation Quantities}
+\subsection{Simulation Quantities}\label{sec:simulation_quantities}
 
 In order to characterize the simulation results some quantities are defined. Often we are interested in the radial profile of our quantities thus we define the radial profile of a quantity $\mathcal{S}$, in discretized matrix form, as:
 \begin{equation}
@@ -48,3 +53,5 @@ Further more we define various other quantities:
 \begin{itemize}
     \item $E_n = \frac{1}{n_x n_y n_z \delta^2}\sum_{z, x, y} \sum_s n_s^2$
 \end{itemize}
+
+\end{document}

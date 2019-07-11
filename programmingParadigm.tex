@@ -1,3 +1,8 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
 Since a simulation is inherently a stateful application Object-Oriented-Programming is mostly used where the equations and solvers are modeled as objects containing properties \textit{(parameters, last result...)} and methods for iterating or solving. This strictly enforces separation of concern where each object only encapsulate the parameters it needs for its evaluation. Global objects like the \textbf{global Current $\vec{J}$} are passed around as parameters.\newline
 As an example the interface of the object implementing the electron/ion density equation for the 3d-Isothermal model is presented:
 
@@ -49,3 +54,4 @@ The public interface defines a single constructor, taking as parameters all the 
 The functions \textit{iterate} and \textit{pushNewValues} are the workhorses of the object. The first one calculates the next iteration step but doesn't update the density. This allows for better parallelization since until now no variables not directly belonging to the object have been written to. The second function updates the species density using the time stepper.\newline
 The advantage of this programming paradigm is the encapsulation and separation of code allowing for easier debugging and faster updates. We can now easily swap the time stepper or implement the equation in a completely different way without changing all the surrounding code since the interface is relatively easily kept constant. It is also more apparent what parts of code interact with each other.
 
+\end{document}

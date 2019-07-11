@@ -1,0 +1,31 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
+
+\chapter{Polarization Equation Linearization}\label{sec:polarization_equation_evaluation}
+The evaluation of the linearizations is done on a 8x256x1024 grid with $h_x$ and $h_z=0.5$. The following parameter set is used:
+\begin{itemize}
+    \item $\Delta t$: 0.0025
+    \item $\hat{c}$: 5.0
+    \item $\hat{\epsilon}$: 27000.0
+    \item $mcv$: 0.02
+    \item $magnetic Shear$: 1.2
+    \item $\nu_{\parallel}$: 0.3 (linear rise to 1.2 from separatrix to edge)
+    \item $\nu_{\perp}$: 0.3 (linear rise to 1.2 from separatrix to edge)
+    \item core Density: 1.5
+    \item edge Density: 0.13
+\end{itemize}
+The simulation is run on \ac{TV} node using the GPU implementations of the \ac{SOR}-solver and gyroaveraging operator. 
+
+\section{Turbulent Flow}
+The turbulent flow is calculated as it is defined in \autoref{sec:simulation_quantities}.
+
+
+
+\section{Four different Linearizations}
+\section{Influence on Blob-Speed}
+\section{Influence on Zonal-Flow}
+
+\end{document}

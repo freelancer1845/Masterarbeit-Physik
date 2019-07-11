@@ -15,6 +15,7 @@
 \usepackage[toc,page]{appendix}
 \usepackage{todonotes}
 \usepackage{acronym}
+\usepackage{subfiles}
 
 
 \usepackage[numbers]{natbib}
@@ -199,23 +200,30 @@ The following section describes a reduced set of equations derived from the Full
 \todo[]{Find out where}The simulation is currently limited to the Isothermal Full-F Gyrofluid Equations as they have been derived in
 
 \section{Coordinate System}
-\input{coordinateSystem.tex}
+\subfile{coordinateSystem}
+% \input{coordinateSystem.tex}
 \section{Isothermal 3D Full-F Gyrofluid Equations}
 \label{sec:isothermalequations}
-\input{isothermal-full-f-gyrofluid-equations.tex}
+\subfile{isothermal-full-f-gyrofluid-equations}
+% \input{isothermal-full-f-gyrofluid-equations.tex}
 
 
 \section{Fluid Dynamics}
 \label{sec:fluid-dynamics}
-\input{fluid-dynamics.tex}
+\subfile{fluid-dynamics}
+% \input{fluid-dynamics.tex}
+
 
 \chapter{Theory Numerics}
 \section{Discretization}
-\input{discretization.tex}
+\subfile{discretization}
+% \input{discretization.tex}
 \section{Boundary Values}
-\input{BoundaryValues.tex}
+\subfile{BoundaryValues}
+% \input{BoundaryValues.tex}
 \section{Numerical Methods}
-\input{numericalMethods.tex}
+\subfile{numericalMethods}
+% \input{numericalMethods.tex}
 
 \chapter{Theory Computer Science}
 All the code relevant for the simulation is written in C++. This allows high performance and an easy integration of external libraries (FFTW etc.). Also the code may be compiled for a specific architecture giving the compiler the opportunity to optimize in different ways.\newline
@@ -223,25 +231,29 @@ The complete project is saved on the University git server and can be found at \
 .
 
 \section{Build System}
-\input{buildSystem.tex}
+\subfile{buildSystem}
+% \input{buildSystem.tex}
 \section{Programming paradigm}
-\input{programmingParadigm.tex}
+\subfile{programmingParadigm}
+% \input{programmingParadigm.tex}
 \section{Optimization Methods}
-\input{optimizationMethods.tex}
+\subfile{optimizationMethods}
+% \input{optimizationMethods.tex}
 
 
 \chapter{Code description}
-\input{codeDescription.tex}
+\subfile{codeDescription}
+% \input{codeDescription.tex}
 
 
 
 \chapter{Performance Optimizations}
-\input{performanceOptimization.tex}
+\subfile{performanceOptimization}
+% \input{performanceOptimization.tex}
 
-\chapter{Polarization Equation Linearization}
-\section{Four different Linearizations}
-\section{Influence on Blob-Speed}
-\section{Influence on Zonal-Flow}
+\subfile{polarization_equation}
+
+
 
 
 \chapter{Conclusion}
@@ -266,7 +278,8 @@ The complete project is saved on the University git server and can be found at \
 \bibliographystyle{unsrt} %apalike
 \bibliography{literatur}
 \chapter{Acronyms}
-\input{acronyms.tex}
+\subfile{acronyms}
+% \input{acronyms.tex}
 
 
 

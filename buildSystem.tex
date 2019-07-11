@@ -1,3 +1,8 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+
 Since the project is rather large (\textgreater 10000 Lines of Code spread over $\sim 100$ Files) a sophisticated build system is required and thus CMake has been choosen.
 The components of the simulation are divided into CMake-Targets. There are multiple library targets which encapsulate derivatives, algorithms, helper methods and model equations as well as a few executable targets. One of these executable targets will be the desired simulation.\newline
 The project folder structure looks like this:\newline
@@ -48,3 +53,5 @@ The project folder structure looks like this:\newline
 
 Each folder that has C++ code has its own CMakeLists.txt where different build properties and the targets itself are defined (for further information about the CMake code refer to the documentation).\newline
 The git project contains a \textit{Readme} file in which the build process is further described.
+
+\end{document}
