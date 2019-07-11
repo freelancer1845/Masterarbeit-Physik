@@ -1,19 +1,24 @@
 \documentclass[12pt,oneside,bibtotoc,liststotoc]{scrbook}
-\usepackage[utf8]{inputenc}
+% \usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{graphicx}
-\usepackage[nenglish,english]{babel}
+\usepackage[english]{babel}
 \usepackage{a4wide}
 \usepackage{parskip}
 \usepackage[bookmarks]{hyperref}
 \usepackage{fancyhdr}
 \usepackage[right]{eurosym}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage[toc,page]{appendix}
 \usepackage{todonotes}
 \usepackage{acronym}
 
+
 \usepackage[numbers]{natbib}
-\DeclareUnicodeCharacter{2192}{ to}
+% \DeclareUnicodeCharacter{2192}{ to}
 
 \usepackage{listings}
 
@@ -23,7 +28,7 @@
 \usepackage{longtable}
 \usepackage{listings}
 \usepackage{color}
-\usepackage[usenames,dvipsnames]{xcolor}
+
 \colorlet{punct}{red!60!black}
 \definecolor{background}{HTML}{EEEEEE}
 \definecolor{delim}{RGB}{20,105,176}
@@ -201,7 +206,8 @@ The following section describes a reduced set of equations derived from the Full
 
 
 \section{Fluid Dynamics}
-
+\label{sec:fluid-dynamics}
+\input{fluid-dynamics.tex}
 
 \chapter{Theory Numerics}
 \section{Discretization}
@@ -225,20 +231,12 @@ The complete project is saved on the University git server and can be found at \
 
 
 \chapter{Code description}
-\section{Structural Overview}
-\section{Components}
-\section{SOR-Solver Implementation}
-\label{sec:sor-solver-impl}
+\input{codeDescription.tex}
+
 
 
 \chapter{Performance Optimizations}
-\section{OpenMP}
-\section{Nvidia-CUDA}
-\section{Scaling}
-\section{Evaluation}
-\subsection{Scaling on CPU only}
-\subsection{Scaling on CPU/GPU systems}
-
+\input{performanceOptimization.tex}
 
 \chapter{Polarization Equation Linearization}
 \section{Four different Linearizations}

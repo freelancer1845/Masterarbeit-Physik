@@ -1,0 +1,50 @@
+\subsection{Connection to Navier-Stokes}
+\label{sec:connection_navier_stokes}
+
+The structure of the density and velocity equations closely resembles that of the incompressible navier-stokes equations.
+There are some transformations necessary to see the connection and we restrict ourselves to the 2D case. We start with the incompressible navier stokes equations.
+
+\begin{align}
+    \partial_t v &= - \nabla p - v \cdot \nabla v + \Delta v
+\end{align}
+
+In the two-dimensional case this transformation
+\begin{align}
+    v_x &= \partial_y \psi \\
+    v_y &= -\partial_x \psi \\
+    \xi &= \Delta \psi
+\end{align}
+results in the following pressure-free formulation of the navier-stokes equations.
+
+\begin{align}
+    \partial_t \xi &= \left( \partial_x \psi \partial_y \xi - \partial_y \psi \partial_x \xi  \right) + \Delta \xi\\
+    \partial_t \xi &= - \left[\xi, \psi\right] + \Delta \xi
+\end{align}
+
+Now we can compare this to the moment equations written down early and identify the streamline potential $\psi$ with the electric potential and $\xi$ with density or velocity. This only serves as motivation to use terminology from flow equations. We can now define turbulent and zonal flow in the following way:
+
+\begin{align}
+    \Gamma(z) &= \partial_y \phi_e :\, Turbulent\,Flow\\
+    \Lambda(z) &= \partial_x \phi_e :\, Zonal\,Flow
+\end{align}
+
+Here the turbulent flow gives us information on how much of our quantities is transported outwards into the SOL and the zonal flow represents transport parallel to the separatrix.
+
+\subsection{Simulation Quantities}
+
+In order to characterize the simulation results some quantities are defined. Often we are interested in the radial profile of our quantities thus we define the radial profile of a quantity $\mathcal{S}$, in discretized matrix form, as:
+\begin{equation}
+    (\left<\mathcal{S}\right>_y)_i = \frac{1}{n_y} \sum_{j=0}^{n_y} S_{i, j}
+\end{equation}
+which essentially is the mean value over the y-direction.\\
+We now define these quantities:
+
+\begin{itemize}
+    \item $\overline{\Gamma}_{core} = \alpha \sum_{z, y, x \leq \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in Core Plasma}
+    \item $\overline{\Gamma}_{SOL} = \alpha \sum_{z, y, x > \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in SOL Plasma}
+\end{itemize}
+\paragraph{Maybe skip that}\todo{Remove}
+Further more we define various other quantities:
+\begin{itemize}
+    \item $E_n = \frac{1}{n_x n_y n_z \delta^2}\sum_{z, x, y} \sum_s n_s^2$
+\end{itemize}

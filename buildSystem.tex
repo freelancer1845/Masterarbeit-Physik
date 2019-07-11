@@ -1,4 +1,4 @@
-Since the project is rather large (\textgreater 10000 Lines of Code spread over $\sim 100$ Files) a sophisticated build system is required. A typical choiche for C++ is CMake. \todo{Ref?}\\
+Since the project is rather large (\textgreater 10000 Lines of Code spread over $\sim 100$ Files) a sophisticated build system is required and thus CMake has been choosen.
 The components of the simulation are divided into CMake-Targets. There are multiple library targets which encapsulate derivatives, algorithms, helper methods and model equations as well as a few executable targets. One of these executable targets will be the desired simulation.\newline
 The project folder structure looks like this:\newline
 
@@ -39,7 +39,7 @@ The project folder structure looks like this:\newline
    ]
    [performanceTests \textit{Small programs to evaluate various optimizations}]
    [plotting \textit{API for live plotting}]
-   [sorSolverCuda \textit{Cuda Implementation of SOR Solver}]
+   [cuda \textit{Cuda Implementations}]
  ]
  [t3g-config \textit{Default config files}]
  [plotter \textit{Small python program for data visualization}]
