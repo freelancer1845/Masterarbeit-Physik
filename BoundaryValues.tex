@@ -2,11 +2,18 @@
  
 \begin{document}
 
-
-
 To treat the domain boundaries ghost cells are implemented. Currently the simulation needs two ghost cells into every direction. The memory and performance impact is discussed in the \textit{Computer Science} section.
 \subsection{X-Direction}
-In X-Direction (i. e. polodial distance) Dirichlet boundaries are implemented. This is achieved using the ghost cells and simply setting them once. To reduce gradients at the boundaries further actions have to be taken at the x boundaries (\autoref{sec:components-external}).
+For the densities the following boundary conditions are employed:
+\begin{equation}
+    n_s(x) = \begin{cases}
+        2 \cdot n_{s0}(0) - n_{s0}(-x) &\colon for \, x < 0 \\
+        2 \cdot n_{s0}(x_L) - n_{s0}(2x_L-x) &\colon for \, x > x_L \\
+    \end{cases}
+\end{equation}
+
+
+In X-Direction (i. e. polodial distance) for all qunatities Dirichlet boundaries are employed. This is achieved using the ghost cells and simply setting them once. To reduce gradients at the boundaries further actions have to be taken at the x boundaries (\autoref{sec:components-external}). 
 \subsection{Y-Direction}
 In Y-Direction (which is perpendicular to X but not in torodial direction) closed boundary conditions are implemented. One of the consequences is that there is an \textit{in and out flow} of vorticies simulating turbulence incoming from the not simulated area of the polodial slice. \todo{find reference for that}The resolution in Y-Direction needs to be choosen carefully such that vorticies that are mirrored to the opposite do not interfere with themselfes. 
 \subsection{Z-Direction}

@@ -3,7 +3,7 @@
 \begin{document}
 
 
-In this chapter some optimization methods are described and evaluated. Since a deeper discussion would be out of scope only a brief overview is given. Currently almost 50\% of the simulation time is spend on the SOR-Solver for the polarization equation. As a consequence most of the work was spend on the SOR-Solver.
+In this chapter the used optimization methods are described and evaluated. Since a deeper discussion would be out of scope only a brief overview is given. Currently almost 50\% of the simulation time is spend on the SOR-Solver for the polarization equation. As a consequence most of the work was spend on the SOR-Solver.
 \section{OpenMP}
 The complete calculation of the \ac{rhs} for the density and parallel velocities equations can be parallelized without negative consequences. Most gain gives us the parallelization over the z-direction. This is achieved with a simple OpenMP \textit{"for"} worksharing construct as is it is described in \autoref{sec:open-mp-method}. Parallelization in x-direction is only effective for 2D simulations or for very high resolutions. Using the construct on the y-direction is not useful since this loop is always vectorized by the compiler yielding much higher performance. Since the SOR-Solver only works in xy-direction the parallelization in z-direction is effective as well.
 
@@ -11,8 +11,8 @@ The complete calculation of the \ac{rhs} for the density and parallel velocities
 To further optimize the SOR-solver and reduce execution time the iteration is moved to the graphics card. This creates some overhead since data has to be moved back and forth to the GPU. Also since there is usually only one GPU available the parallelization in z-direction is not possible anymore. Scaling for different systems is presented later.
 
 \section{Evaluation}
-To evaluate performance in a realistic situation it is measured using an actual simulation. A single measurement consists of having the simulation run 1000 iterations and taking the time. Also measured is how much the different steps of each iteration take.\newline
-The code is tested on four different systems:
+To evaluate performance in a realistic situation it is measured using an actual simulation. A single measurement consists of 1000 iterations where the execution time is measured each 20 iterations. Also measured is how much the different steps of each iteration take.\newline
+The code is evaluated on three different systems:
 \begin{itemize}
     \item \textbf{\ac{K40}}: Intel Xeon E3-1225 V2; 16GB RAM; Nvidia K40
     \item \textbf{\ac{GTX}}: 2x Intel Xeon Bronze 3104; 12x 8GB RAM; 7x Nvidia GTX 1080 Ti
@@ -27,7 +27,7 @@ Two versions are tested against each other. The first version only runs on the C
 \end{enumerate}
 
 \subsection{Data Output}
-Different sections of the code are measured:
+Five sections of the code are measured individually as well as the global execution time:
 \begin{itemize}
     \item Polarization Equation
     \item Gyroaveraging
@@ -93,7 +93,7 @@ Using this data one can now determine where it is useful to do future optimizati
     \caption{\small Execution times of 20 iterations normalized to the full execution time of these 20 iteartions.}
     \label{fig:gtx_parts}
 \end{figure}
-Moving the timestepping to the GPU as well as the \ac{RHS} evaluation would effectively fully move the simulation to GPU execution. Since less data transfers between host memory and device memory would be required this might dramatically increase performance, but data transfers between individual GPU's would be necessary to model the z-direction. 
+Moving the timestepping to the GPU as well as the \ac{RHS} evaluation would effectively fully move the simulation to GPU execution. Since less data transfers between host memory and device memory would be required this might dramatically increase performance, but data transfers between individual GPU's would be necessary to model the z-direction further increasing code complexity.
 
 \section{Conclusion}
 Speedups larger than two have been measured which at least reduces the execution time by a factor of two. The speedup is generally better the greater the grid is. This makes it possible to asses whether resolution has an impact on the simulation model. Prior to these optimization's running a simulation with grid size 8x256x1024 could take a week but is now possible in a few days allowing for faster prototyping of adjustments to the model. It should be noted though that magical speedups as they are described in \cite{CUDARedBlack} of >40 are not reached. A major positive effect on CPU performance has vectorization. Most of the simulation code is vectorized by the compiler and as such it runs very well on the CPU. Also the simulation does not have a high memory footprint since a single XY-plane takes about 2MB for a single quantity on a grid of 8x256x1024. Such a plane fits into the cache of current CPUs and naturally gives them a high memory bandwidth. Nevertheless it might be worth moving all the code to the GPU which would reduce the overhead associated with copying data from the host memory to the GPU memory. On the other hand this involves much more complex programming and in most cases exceeds the qualifications of a physicist thus making it harder to collaborate or evolve the model and simulation.
