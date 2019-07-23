@@ -22,7 +22,7 @@ for (int x = 0; x < n_x - 1; x++) {
   array[x] = (array[x + 1] - array[x]) / h_x    
 }
 \end{lstlisting}
-where the memory is reused, the compiler won't be able to vectorize the code. Whereas if we save the result in a second array this would not be a problem for the compiler.
+where the memory is reused, the compiler won't be able to vectorize. Whereas if we save the result in a second array this would not be a problem for the compiler.
 \subsection{OpenMP} \label{sec:open-mp-method}
 Another simple way to parallelize such loops is via OpenMP and its \textit{worksharing constructs}. This mainly applies to the outer loop since worksharing to threads is only effective if the shared work is heavy enough.
 \begin{lstlisting}

@@ -22,7 +22,7 @@ Depending on the parameters data output steps are performed. This is not done ev
 \section{Components}
 \subsection{Initialization}
 \subsubsection{Fresh start}
-At first the parameter file is read, a parameters and a domain object containing all information about the simulation and grid are created. From these objects all other objects are constructed and the necessary memory is allocated.\\
+At first the parameter file is read and parameters and domain objects containing all information about the simulation and grid are created. From these objects all other objects are constructed and the necessary memory is allocated.\\
 Following the electron density is initialized using the method \textit{Init::initCloseToData2} that essentially creates a differentiable profile:
 \begin{figure}[!hbt]
     \centering
@@ -43,7 +43,7 @@ This further \textit{seeds} the turbulence. The last thing to do is to set the p
 
 
 \subsubsection{Restart}
-On a restart the only necessary step is to initialize the time stepper since the previous steps are not stored in the data file. This creates a small error that most likely only has a small effect on the data if the simulation runs for a sufficient time afterwards.
+On a restart the only necessary step is to initialize the time stepper since the previous steps are not stored in the data file. This creates a small error that most likely only has a small effect on the data if the simulation runs for a sufficient time afterwards but has not been evaluated properly and should be avoided. A solution would be to also save data of the previous steps.
 
 \subsection{Gyroaveraging of Ions {\small "src/models/isothermal/gyroaveraging.cpp"}}
 \label{sec:components-gryoaverage}
@@ -74,8 +74,7 @@ This step is necessary to keep the simulation stable at the edges. There is a zo
 The code execution is straight forward.
 \begin{enumerate}
     \item Calculate right hand side ($F$) and non-linearity ($N$) of: $\nabla N \nabla \phi = F$
-    %\item Choose initial values of solver to be: $\phi_0 = \phi_{-1} + 0.75 \cdot (\phi_{-1} - \phi_{-2})$
-     \item Choose initial values of solver to be: $\phi_0 = \phi_{-1}$
+    \item Choose initial values of solver to be: $\phi_0 = \phi^{-1} + 0.75 \cdot (\phi^{-1} - \phi^{-2})$
     \item Execute solver (either on CPU or GPU) (\autoref{sec:sor-solver-implementation})
     \item Calculate gyro-screen potential
     \item Add a special non-linear term which is not discussed here
@@ -112,7 +111,7 @@ On the CPU the red black scheme is implemented by two sweeps over the complete m
 On the GPU a different approach has been taken. Since it is faster to load adjacent data points into shared memory (coalesced memory access) it is useful to rearrange the data and split them into two matrices. One containing all the red (even) data points and the other all black (odd) data points. The implementation follows the one presented in this conference article \cite{CUDARedBlack}.
 
 \section{Modularization}
-A moderately high level of abstraction is employed in the code base to allow modularization. In this context this means that specific parts of the code are easily interchangeable with newer/other implementations. To make this possible the components may only be loosely coupled. \autoref{fig:highLevelCodeStructure} shows the general structure of the code. Now it can easily be seen that the implementation of a new model can simply reuse \textit{Algorithms, Domain and Core} modules of the existing models. Furthermore one can for example improve the algorithms without greater knowledge about the model since the algorithms do not depend on the models. Also the implementation of new models does not interfere with the function of other models.
+A moderately high level of abstraction is employed in the code base to allow modularization. In this context this means that specific parts of the code are easily interchangeable with newer/other implementations. To make this possible the components may only be loosely coupled. \autoref{fig:highLevelCodeStructure} shows the general structure of the code. Now it can easily be seen that the implementation of a new model can simply reuse \textit{Algorithms, Domain and Core} modules of the existing models. Furthermore one can for example improve the algorithms without greater knowledge about the model since the algorithms do not depend on the models. Also the implementation of newer models does not interfere with the function of the existing models.
 \begin{figure}[h]
     \centering
     \includegraphics[]{pdfs/code_modules_high_level.pdf}

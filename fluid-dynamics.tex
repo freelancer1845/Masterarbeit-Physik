@@ -19,18 +19,18 @@ In the two-dimensional case this transformation
     v_y &= -\partial_x \psi \\
     \xi &= \Delta \psi
 \end{align}
-results in the following pressure-free formulation of the navier-stokes equations.
+yields the following pressure-free formulation of the navier-stokes equations.
 
 \begin{align}
     \partial_t \xi &= \left( \partial_x \psi \partial_y \xi - \partial_y \psi \partial_x \xi  \right) + \Delta \xi\\
     \partial_t \xi &= - \left[\xi, \psi\right] + \Delta \xi
 \end{align}
 
-Now we can compare this to the moment equations written down early and identify the streamline potential $\psi$ with the electric potential and $\xi$ with density or velocity. This only serves as motivation to use terminology from flow equations. We can now define turbulent and zonal flow in the following way:
+Now we can compare this to the moment equations written down earlier and identify the streamline potential $\psi$ with the electric potential and $\xi$ with density or velocity. This only serves as motivation to use terminology from flow equations. We can now define turbulent and zonal flow in the following way:
 
 \begin{align}
-    \Gamma(z) &= \partial_y \phi_e :\, Turbulent\,Flow\\
-    \Lambda(z) &= \partial_x \phi_e :\, Zonal\,Flow
+    \Gamma(z,x,y) &= \partial_y \phi_e :\, Turbulent\,Flow\\
+    \Lambda(z,x,y) &= \partial_x \phi_e :\, Zonal\,Flow
 \end{align}
 
 Here the turbulent flow gives us information on how much of our quantities is transported outwards into the SOL and the zonal flow represents transport parallel to the separatrix.

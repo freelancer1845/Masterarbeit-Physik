@@ -11,11 +11,17 @@ For the densities the following boundary conditions are employed:
         2 \cdot n_{s0}(x_L) - n_{s0}(2x_L-x) &\colon for \, x > x_L \\
     \end{cases}
 \end{equation}
+This forces a mixed Dirichelt-Neumann boundary condition.
+The parallel velocities are forced to equal zero at the boundaries.
+For the potential a special boundary condition is employed:
+\begin{align}
+    \phi_e(x) = 0 \qquad &\colon for \, x = 0\\
+    \partial_x\phi_e(x) = 0 \qquad &\colon for \, x = x_L \label{eq:boundary-potential-right}
+\end{align}
+The first condition fixes the absolut value of the potential and is necessary for the numerical solver to converge. This can be seen as a Coulomb gauge. This fixing may artifically create high gradients at the $x=0$ boundary and thus one needs to extend the boundary condtions of the densities into to the domain. The second condition forces zero gradients in x-direction on the $x=x_L$ boundary. Since only the gradient of the potential appears as driving term in the equations those conditions for the potential move artifical dynamics to the left core region where they are easier to handle. 
 
-
-In X-Direction (i. e. polodial distance) for all qunatities Dirichlet boundaries are employed. This is achieved using the ghost cells and simply setting them once. To reduce gradients at the boundaries further actions have to be taken at the x boundaries (\autoref{sec:components-external}). 
 \subsection{Y-Direction}
-In Y-Direction (which is perpendicular to X but not in torodial direction) closed boundary conditions are implemented. One of the consequences is that there is an \textit{in and out flow} of vorticies simulating turbulence incoming from the not simulated area of the polodial slice. \todo{find reference for that}The resolution in Y-Direction needs to be choosen carefully such that vorticies that are mirrored to the opposite do not interfere with themselfes. 
+In Y-Direction (which is perpendicular to X but not in torodial direction) closed boundary conditions are implemented. One of the consequences is that there is an \textit{in and out flow} of vorticies simulating turbulence incoming from the not simulated area of the polodial slice. \todo{find reference for that}The length of Y-Direction needs to be choosen carefully such that vorticies that are mirrored to the opposite do not interfere with themselfes (4x times x size).
 \subsection{Z-Direction}
 In Z-Direction there is a differentiation whether the X-coordinate lies in/on or outside the separatrix.
 \paragraph{In/On Separatrix}
