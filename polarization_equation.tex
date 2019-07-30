@@ -1,6 +1,7 @@
 \documentclass[master.tex]{subfiles}
  
 \newcommand{\meanxy}[1]{\left<#1\right>_{z,y}}
+\newcommand{\Tflow}[0]{\overline{\Gamma}}
 
 \begin{document}
 
@@ -32,22 +33,29 @@ To compare the different linearizations defined in \autoref{sec:polarization-lin
 
 \section{Turbulent Flow}
 The turbulent flow is calculated as it is defined in \autoref{sec:simulation_quantities}. After the simulation has reached a stable regime a mean value is taken and compared. The turbulent flows for the whole simulation are displayed in \autoref{fig:turbulent-flow-low} on a semi logarithmic grid. From this figure one can already see that there is no apparent difference for the turbulent flows in regard to the lineraizations.
-
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/turbulent-flow-low.pdf}
     \caption{Turbulent flow split into Core and \ac{SOL} region for each linearization. The lighter colors represent the \ac{SOL} parts.}
     \label{fig:turbulent-flow-low}
 \end{figure}
+\autoref{fig:turbulent-flow-low-means} shows the mean value of $\Tflow_{Core}$ and $\Tflow_{SOL}$ from 120,000 to 400,000 iterations. There may be a small indication that $\Tflow_{Core}$ is a little higher for the constant background (local model) lineraizations but considering the magnitude of fluctuations (visualized by the error bars) this seems very far fetched. 
+
+
 
 \begin{figure}[!htbp]
-    \includegraphics[widht=\linewidth]{pdfs/turbulent-flow-low-means.pdf}
-    \caption{Mean values of turbulent flow after 120,000 iterations. There is no apparent difference visible.}
+    \includegraphics[width=\linewidth]{pdfs/turbulent-flow-low-means.pdf}
+    \caption{Mean values of $\Tflow$ after 120,000 iterations. There is no apparent difference visible.}
     \label{fig:turbulent-flow-low-means}
 \end{figure}
 
 \section{Zonal Potential}
 
 
+\begin{figure}[!htbp]
+    \includegraphics[width=\linewidth]{pdfs/zonal_potential_low.pdf}
+    \caption{Mean values of Zonal Potential, Zonal Flow and Zonal Flow Potential of iteration 120,000-400,000}
+    \label{fig:zonal-potential-low-all}
+\end{figure}
 
 
 \end{document}
