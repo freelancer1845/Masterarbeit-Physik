@@ -20,7 +20,7 @@ The evaluation of the linearizations is done on a 8x128x512 8x256x1024 grid with
     \item core Density: 1.5
     \item edge Density: 0.13
 \end{itemize}
-The simulation is run on \ac{TV} node using the GPU implementations of the \ac{SOR}-solver and gyroaveraging operator. The lower resolution grid has been run for 400.000 iterations and a state snapshot is taken every 20,000 iterations. Due to time and disk space limitations for the higher resolution only 200.000 iterations are done as well as $\Delta t$ is reduced to $0.015$ to stay in the \ac{CFL} limit.
+The simulation is run on \ac{TV} node using the GPU implementations of the \ac{SOR}-solver and gyroaveraging operator. The lower resolution grid has been run for 400.000 iterations and a state snapshot is taken every 20,000 iterations. Due to time and disk space limitations for the higher resolution only 200.000 iterations are done as well as $\Delta t$ is reduced to $0.01$ to stay in the \ac{CFL} limit.
 
 \section{Equilibrium State}
 At first the simulation develops strong turbulence and high fluctuations which result in an outburst of "material" (i. e. the total density decreases). Afterwards the simulation approaches a steady state where the properties only change little. \todo{Place Figure of Energy} This behavior can be seen by looking at the $\mathrm{E} \times \mathrm{B}$-Energy and the total density both restricted to the core-plasma (in/out separatrix). The idea now is to compare mean values over the simulation time where a equilibrium state has been reached. The errors attached to the mean values are calculated via the standard derivation but do not represent the error of multiple simulations but rather give an idea about the size of fluctuations in the equilibrium state.
@@ -50,12 +50,40 @@ The turbulent flow is calculated as it is defined in \autoref{sec:simulation_qua
 
 \section{Zonal Potential}
 
+The same procedure of the previous section is applied to the zonal potential, zonal flow and zonal flow potential (vorticity). The results are shown in \autoref{fig:zonal-potential-low-all}.\\
+The results form two groups: The non linearized model and the third linearization share distinct features as well as the first and the second. Since the linearization specifically targets the gradient of the densities which is the strongest close to the core plasma, the greatest difference between the linearizations and the non linearized model is observed there. One has to note that on the boundaries numerical artifacts play a major role leading to artificial density gradients of first and second order explaining for instance the \textit{bump} on the $x_L$ boundary.
 
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/zonal_potential_low.pdf}
     \caption{Mean values of Zonal Potential, Zonal Flow and Zonal Flow Potential of iteration 120,000-400,000}
     \label{fig:zonal-potential-low-all}
 \end{figure}
+
+\section{Parallel Velocities}
+
+Another quantity can be defined as following:
+\begin{equation}
+    \mathrm{E}_{v_\parallel} = \hat{\epsilon} \cdot \int_{[z,x,y]} \left( \mu_ev_{e\parallel}^2 + \mu_iv_{i\parallel }^2 \right) \, dxdydz
+\end{equation}
+which essentially is the parallel kinetic energy of the system.
+As in the previous chapters the integration will be restricted to either Core or the \ac{SOL} region. The time evolution of these quantities is shown in \autoref{fig:velocity-energy-low}.
+
+\begin{figure}[!htbp]
+    \includegraphics[width=\linewidth]{pdfs/velocity-energy-low.pdf}
+    \caption{Time evolution of $\mathrm{E}_{v_\parallel}$ for Core and \ac{SOL} region}
+    \label{fig:velocity-energy-low}
+\end{figure}
+
+The comparison shows no major difference but if one looks at the mean values the split into two groups from the previous section is visible (\autoref{fig:velocity-energy-low-mean}).
+
+
+\begin{figure}[!htbp]
+    \includegraphics[width=\linewidth]{pdfs/velocity-energy-low-means.pdf}
+    \caption{Mean of Velocity Energy from 120,000 to 400,000 iterations}
+    \label{fig:velocity-energy-low-mean}
+\end{figure}
+
+
 
 
 \end{document}
