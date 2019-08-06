@@ -39,8 +39,25 @@ These are the discretizations used throughout the simulation:\newline
     \nabla_\perp^2f(z,x_i,y_j) \approx \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\ + \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\  + O(h_x^2) + O(h_x^2)
     \end{split}
     \end{equation}
+\end{footnotesize}      %$[f(x,y),g(x,y)]_\perp = \partial_x f \partial_y g - \partial_y f \partial_x g$
+    \item Poisson Bracket \\
+    \begin{footnotesize}
+        \begin{equation}
+            \begin{split}
+                [f(x,y), g(x,y)]_\perp = -\frac{1}{12h_xh_y} & [
+                    (g_{i, j-1} + g_{i+1,j-1} - g_{i, j+ 1} - g_{i+1,j+1})(f_{i+1,j}-f_{i, j}) \\
+                    &+ (g_{i-1,j-1}+g_{i,j-1}-g_{i-1,j+1} - g_{i,j+1})(f_{i,j}-f_{i-1,j})\\
+                    &+ (g_{i+1,j}+g_{i+1,j+1}-g_{i-1,j}-g_{i-1,j+1})(f_{i,i+1}-f_{i,j})\\
+                    &+ (g_{i+1,j+1}+g_{i+1,j}-g_{i-1,j-1}-g_{i-1,j})(f_{i,j}-f_{i,j-1})\\
+                    &+ (g_{i+1, j} - g_{i, j + 1})(f_{i+1,j+1}-f_{i,j})\\
+                    &+ (g_{i, j-1} - g_{i-1, j})(f_{i,j}-f_{i-1,j-1})\\
+                    &+ (g_{i,j+1}-g_{i-1,j})(f_{i-1,j+1}-f_{i,j})\\
+                    &+ (g_{i+1, j} - g_{i,j-1})(f_{i,j}-f_{i+1,j-1}) ]
+            \end{split}
+        \end{equation}
     \end{footnotesize}
-    \item Poisson Bracket $[f(x,y),g(x,y)]_\perp = \partial_x f \partial_y g - \partial_y f \partial_x g$
+
+
 \end{itemize}
 
 \subsection{Time Integration - Karniadakis Scheme}
@@ -50,7 +67,7 @@ In our case it iterates an equation of form
 \begin{equation}
     \partial_t \Phi = F(\Phi) - \lambda_s
 \end{equation}
-where $\lambda_s$ represents for source and sink terms and $n$ denotes the time step in the following way :
+where $\lambda_s$ represents sources and sinks and $n$ denotes the time step in the following way :
 \begin{equation}\label{eq:karnidakis-scheme}
 \begin{split}
     \Phi^{n + 1} = \quad &\frac{18}{11} \Phi^{n} - \frac{9}{11} \Phi^{n-1} + \frac{2}{11}  \Phi^{n-2}\\

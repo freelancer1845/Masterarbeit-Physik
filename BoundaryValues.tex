@@ -2,7 +2,9 @@
  
 \begin{document}
 
-To treat the domain boundaries ghost cells are implemented. Currently the simulation needs two ghost cells into every direction. The memory and performance impact is discussed in the \textit{Computer Science} section.
+To treat the domain boundaries ghost cells are implemented. Currently the simulation needs two ghost cells into every direction.
+
+ \todo{Decided whether to keep this}The memory and performance impact is discussed in the \textit{Computer Science} section.
 \subsection{X-Direction}
 For the densities the following boundary conditions are employed:
 \begin{equation}
@@ -11,7 +13,7 @@ For the densities the following boundary conditions are employed:
         2 \cdot n_{s0}(x_L) - n_{s0}(2x_L-x) &\colon for \, x > x_L \\
     \end{cases}
 \end{equation}
-This forces a mixed Dirichelt-Neumann boundary condition.
+This enforces a mixed Dirichelt-Neumann boundary condition.
 The parallel velocities are forced to equal zero at the boundaries.
 For the potential a special boundary condition is employed:
 \begin{align}

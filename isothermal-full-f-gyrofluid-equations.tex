@@ -116,13 +116,13 @@ whereas \autoref{eq:polarization} has the following form
 
 Solving \autoref{eq:linear-poisson-equation} is much simpler and thus it is desirable to bring \autoref{eq:general-poisson} into the same form. Presented are three different linearizations. These are evaluated and compared later.
 
-\subsection{Constant Background Linearization \textit{(Long Wavelength Approximation)}}
+\subsection{Constant Background Linearization \textit{(Local Model)}}
 
 In \autoref{eq:general-poisson} we assume $N(x,y, t) \approx \overline{N}_0$ for all times where $\overline{N}_0=\frac{1}{L_yL_x}\int_{[x,y]} N(x,y, t = 0) dx dy$. \autoref{eq:general-poisson} reduces to:
 \begin{equation}
     \Delta \Psi(x,y,t) = \frac{\rho(x,y,t)}{\overline{N}_0}
 \end{equation}
-This approximation would be valid if $N(x,y, 0) \approx N(x,y,t)$ and $\nabla N(x,y,0) \approx 0$. In some contexts this is also refered as  $\delta-f$ or local model.
+This approximation would be valid if $N(x,y, 0) \approx N(x,y,t)$ and $\nabla N(x,y,0) \approx 0$. In some contexts this is also referred to as  $\delta-f$ or \textit{local model} whereas the non linearized form is called a \textit{global model}.
 
 \subsection{Time-independent Radial Background Profile}
 In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t = 0)\right>_y$. This reduces the general poisson equation to:
@@ -138,6 +138,6 @@ In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t)\right>_
 \end{equation}
 This would be valid if $\partial_y N \approx 0$.
 \newline
-Evaluation and results are found in \autoref{sec:polarization_equation_evaluation}.
+Evaluation and results are found in \autoref{sec:polarization_equation_evaluation}. It should be noted that the first and second linearization naturally depend on the initial density profile and thus it needs to be chosen carefully.
 
 \end{document}
