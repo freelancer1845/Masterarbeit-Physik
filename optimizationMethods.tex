@@ -65,15 +65,31 @@ To achieve good parallelization the call structure of theses loops is done in th
       { loop4(); }
   }
 \end{lstlisting}
-Now each section uses at first only one thread. But when execution reaches the taskloop construct further threads are \textit{borrowed}. In this case the totally used threads could be 32 if each iteration of the loops is executed on a single thread.\newline
+Now each section uses at first only one thread. But when execution reaches the taskloop construct further threads are \textit{borrowed}. In this case the maximum used threads could be 32 if each iteration of the loops is executed on a single thread.\newline
 
-
-
-Sometimes it might even be worth to use OpenMP to parallelize the loop over the x-coordinate especially if the resolution in y-direction is large enough (\textgreater 1000 grid points).
+\begin{blockquote}
+  \small
+  Sometimes it might even be worth to use OpenMP to parallelize the loop over the x-coordinate especially if the resolution in y-direction is large enough (\textgreater 1000 grid points).
+\end{blockquote}
+The code is structured such that his parallelization is easily employed making it straight forward to change it later on. Also every \textit{pragma} is surrounded by an \textit{\#ifdef} preprocessor command for Z and X coordinate.
+\begin{lstlisting}
+  #ifdef PARALLELIZE_Z
+  #pragma omp taskloop
+  #endif
+  for (...)
+\end{lstlisting}
+This allows for smarter debugging and selective parallelization levels.
 
 \subsection{GPU Offloading using CUDA}
 To further optimize the code one can move some of the calculation to the graphics card. The graphics processing unit is optimized for massive parallelism and for example the SOR-Solver can be implemented effectively. The downside to this optimization is that the code becomes very complex. Two main factors play a role. The first one is that we lose unified memory. This requires us to spend some work on transferring data from main memory to the GPU memory and back, cluttering the code and making it hard to understand for someone not familiar with CUDA. The second key factor is that the code on the GPU is not sequential anymore. It is executed in parallel by many threads which makes it difficult to write readable code.\newline
-Nevertheless it can be very effective as will be shown later.
+
+\subsection{GPU Code vs CPU Code}
+Since GPU code is sometimes hard to follow a comparable CPU implementation is always be present allowing to verify the correctness.\newline
+Another important feature is to make it possible to compile the code without Cuda available since not every workstation is Cuda capable. In this simulation code all the Cuda code is kept into a single CMake target that is compiled into a static library by the Cuda compiler. It is then later linked to the rest of the simulation. The big advantage is that only the Cuda dependent code needs to be compiled with the Cuda compiler which for example not always supports the newest standard. If theres no Cuda compiler available the CMake target is simply not compiled and the simulation code may not call any functions that in turn call functions from the Cuda compiled CMake target since this would result in a linking error. This is implemented by single macro definition \textit{(COMPILE\_CUDA\_CODE)}.
+
+\subsection{Multi GPU Systems}
+To make full use of all available GPUs on given system the solvers need to be distributed on the different devices. This is done via a simple static variable that keeps track on what device the last solver was created on. So if one creates 8 \ac{SOR} solvers on a system with 4 devices the first solver is on device 0 the second on device 1 and so forth. The fifth solver is again created on the device 0. This is not always an ideal distribution. For example if the first solver and the fifth solver always take longer for some reason, the other three devices are underutilized. But it is a simple construct to implement which may be changed later on.\newline
+To restrict the use of a single GPU device by multiple threads semaphores are used. The concurrent threads per device can be controlled by a macro definition \textit{(THREADS\_PER\_DEVICE - defaults to 2)}. It is useful to have multiple threads execute on a single device to increase GPU utilization since then memory transfers can overlap with kernel executions. If a solver is executed it first tries to acquire a permit from the semaphore associated to the device. If non is available the thread is blocked. After the execution of the solver the permit is released and waiting threads are notified.
 
 
 \end{document}
