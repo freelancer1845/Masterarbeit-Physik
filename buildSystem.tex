@@ -52,6 +52,16 @@ The project folder structure looks like this:\newline
 \end{forest}
 
 Each folder that has C++ code has its own CMakeLists.txt where different build properties and the targets itself are defined (for further information about the CMake code refer to the documentation).\newline
-The git project contains a \textit{Readme} file in which the build process is further described.
+This imposes a clear structure on the code base such that it can be understood by future programmers and easily extended to include further models or algorithms.\newline
+With the use of CMake it is also clearly defined what libraries are necessary to build and run the simulation. This is a common problem when building software on different systems for examples clusters since not all libraries are present or located where you would expect them. For example on the \textit{gpu3 cluster} that is used later for evaluation the FFTW3 library is not located at the standard location. A simple solution to this problem is to \textit{tell} CMake the updated path using a simple command line option during the build process:
+\begin{blockquote}
+  \small
+  cmake -DFFTW\_ROOT=/opt/ohpc/pub/libs/gnu7/openmpi3/fftw/3.3.7 (...)\newline
+  \newline
+  \footnotesize{The git project contains a \textit{Readme} file in which the build process is further described.}
+\end{blockquote}
+
+
+
 
 \end{document}

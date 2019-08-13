@@ -3,7 +3,30 @@
 \begin{document}
 
 
-Since a simulation is inherently a stateful application Object-Oriented-Programming is mostly used where the equations and solvers are modeled as objects containing properties \textit{(parameters, last result...)} and methods for iterating or solving. This strictly enforces separation of concern where each object only encapsulate the parameters it needs for its evaluation. Global objects like the \textbf{global Current $\vec{J}$} are passed around as parameters.\newline
+Since a simulation is inherently a \textit{stateful} application Object-Oriented-Programming is mostly used where the equations and solvers are modeled as objects containing properties \textit{(parameters, last result...)} and methods for iterating or solving. This strictly enforces separation of concern where each object only encapsulate the parameters it needs for its evaluation. Global objects like the \textbf{global Current $\vec{J}$} are passed around as parameters.\newline
+The first step in coding the simulation was to define what can be modeled as a separate object. Since the previous version of the simulation code on which the code originating from this master thesis is based on \todo{Refere to TOEFEL code} had no separate structuring into components this had to be done starting from zero.\newline
+Some of the objects that are choose to be \textit{independent} components are listed here:
+\begin{blockquote}
+  
+- \textbf{Domain:} Size, \#Ghost Cells, Magnetic Configuration, ...\\
+- \textbf{Species:} Fields ($n$,$v_\parallel$,$\phi$), Properties (mass, charge, ...), Ghost Cells handling\\
+- \textbf{Density Equation:} Implementation of \autoref{eq:electron_density} and \autoref{eq:ion_density}\\
+- \textbf{Velocity Equation:} Implementation of \autoref{eq:electron_velocity} and \autoref{eq:ion_velocity}\\
+- \textbf{Gyro Averaging:} Implementation of \autoref{eq:gyro-averaging-opeartor}\\
+- \textbf{Polarization Equation:} Implementation of \autoref{eq:polarization}\\
+- \textbf{External:} Extended handling of boundary values\\
+- \textbf{Simulation:} Main Object containing and organizing the others
+\end{blockquote}
+Further objects are representing for instance solvers, parameters and matrices.\newline
+A main issue was to find a good balance between an overly complex structure and a good separation. The decisions have been made with various future extensions in mind. For instance:
+\begin{blockquote}
+  - Extending Model by Thermal Equations\\
+  - Including Vector Potential (Ampères Law)\\
+  - Extending Model by multiple Ion Species\\
+  - Moving Model to GPU
+\end{blockquote}
+
+\subsection{Example: Interface Density Equation}
 As an example the interface of the object implementing the electron/ion density equation for the 3d-Isothermal model is presented:
 
 \lstset { %

@@ -30,6 +30,14 @@
 \usepackage{listings}
 \usepackage{color}
 
+\usepackage[most]{tcolorbox}
+\definecolor{block-gray}{gray}{0.90}
+\definecolor{block-text}{gray}{0.25}
+\definecolor{block-border}{HTML}{48c268}
+\newtcolorbox{blockquote}{colback=block-gray,grow to right by=0mm,grow to left by=0mm,
+boxrule=0pt,boxsep=0pt,breakable, sharp corners,leftrule=1mm,colframe=block-border!75!black,coltext=block-text}
+
+
 \colorlet{punct}{red!60!black}
 \definecolor{background}{HTML}{EEEEEE}
 \definecolor{delim}{RGB}{20,105,176}
@@ -109,9 +117,9 @@
 
 \thispagestyle{empty}
 \begin{center}
-\LARGE{Leopold-Franzens Universität Innsbruck\\
+\LARGE{Universität Innsbruck\\
 Faculty for Mathematics, Computer Science and Physics}\\[3ex]
-\large{Institut for Physics}\\[2ex]
+\large{Institut for Ion Physics and Applied Physics}\\[2ex]
 \large{Theoretical Plasma Physics}
 \end{center}
 \medskip
@@ -120,7 +128,7 @@ Faculty for Mathematics, Computer Science and Physics}\\[3ex]
 \includegraphics[width=3cm]{Logo}
 \vspace{1.5cm}
 
-\textbf{\LARGE{Masterthesis}}
+\textbf{\LARGE{Master Thesis}}
 \medskip\par
 \textbf{\normalsize{zur Erreichung des akademischen Grades}} \\[3ex]
 \textbf{\Large{Master of Science}}
@@ -151,7 +159,6 @@ von \par
 
 \begin{quote}
 \emph{Ich erkläre hiermit an Eides statt durch meine eigenhändige Unterschrift, dass ich die vorliegende Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet habe. Alle Stellen, die wörtlich oder inhaltlich den angegebenen Quellen entnommen wurden, sind als solche kenntlich gemacht.
-\\Ich erkläre mich mit der Archivierung der vorliegenden Bachelorarbeit einverstanden.
 }
 \end{quote}
 \vspace{2.5cm}

@@ -104,6 +104,11 @@ The polarization equation (\autoref{eq:polarization}) has the form:
 \begin{equation}
     \nabla\left( A(x, y) \nabla U(x, y)\right) = F(x, y)
 \end{equation}
-The discretization is presented here \cite{DielectricPoisson}. The problem solved in the reference evolves from the variable dielectrica poisson equation which is of a simlar form. To solve the linear system a \ac{SOR} iterator is implemented which is further described here \cite{SORPaper}. Implementation details are presented in \autoref{sec:sor-solver-implementation}.
+The discretization is presented here \cite{DielectricPoisson}. The problem solved in the reference evolves from the variable dielectric poisson equation which is of a similar form. To solve the linear system a \ac{SOR} iterator is implemented which is further described here \cite{SORPaper}. Implementation details are presented in \autoref{sec:sor-solver-implementation}.
+
+\subsection{Choosing viscosities}
+The viscosities involved in the evolution equations are fundamental for the convergence of the simulation. Currently we only have a heuristic approach for finding appropriate values.\newline
+The \textit{quality} of the viscosities is derived from turbulence spectra of the densities, parallel velocities, potential and vorticity. Good parameters show the characteristic turbulence spectrum of energy dissipation via an energy cascade \cite{TurbulentSpectra}.\newline
+Viscosities that are to high give raise to artificial waves and eddies in the length scale of the distance between grid points and/or block the full development of a energy cascade. On the other hand viscosities that are too low hinder the full dissipation of smaller eddies which then in turn never completely decay. Since they are in length scale of grid distances they cannot be resolved sufficiently by the simulation and thus result into unwanted artificial artifacts.
 
 \end{document}
