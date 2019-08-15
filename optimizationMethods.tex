@@ -71,7 +71,9 @@ Now each section uses at first only one thread. But when execution reaches the t
   \small
   Sometimes it might even be worth to use OpenMP to parallelize the loop over the x-coordinate especially if the resolution in y-direction is large enough (\textgreater 1000 grid points).
 \end{blockquote}
-The code is structured such that his parallelization is easily employed making it straight forward to change it later on. Also every \textit{pragma} is surrounded by an \textit{\#ifdef} preprocessor command for Z and X coordinate.
+The code is structured such that this parallelization is easily employed. Therefore it was sometimes necessary to use more memory than was absolutely necessary (for instance to store intermediate results).\newline
+There are two levels of grid parallelization employed throughout the code. The first level parallelizes in Z direction and the second in X direction. This is handled using a simple macro definition. Every OpenMP parallelized loop has the following macro \textit{guard}:
+
 \begin{lstlisting}
   #ifdef PARALLELIZE_Z
   #pragma omp taskloop
@@ -88,8 +90,11 @@ Since GPU code is sometimes hard to follow a comparable CPU implementation is al
 Another important feature is to make it possible to compile the code without Cuda available since not every workstation is Cuda capable. In this simulation code all the Cuda code is kept into a single CMake target that is compiled into a static library by the Cuda compiler. It is then later linked to the rest of the simulation. The big advantage is that only the Cuda dependent code needs to be compiled with the Cuda compiler which for example not always supports the newest standard. If theres no Cuda compiler available the CMake target is simply not compiled and the simulation code may not call any functions that in turn call functions from the Cuda compiled CMake target since this would result in a linking error. This is implemented by single macro definition \textit{(COMPILE\_CUDA\_CODE)}.
 
 \subsection{Multi GPU Systems}
-To make full use of all available GPUs on given system the solvers need to be distributed on the different devices. This is done via a simple static variable that keeps track on what device the last solver was created on. So if one creates 8 \ac{SOR} solvers on a system with 4 devices the first solver is on device 0 the second on device 1 and so forth. The fifth solver is again created on the device 0. This is not always an ideal distribution. For example if the first solver and the fifth solver always take longer for some reason, the other three devices are underutilized. But it is a simple construct to implement which may be changed later on.\newline
+To make full use of all available GPUs on given system the solvers need to be distributed over the availalbe devices. This is done via a simple static variable that keeps track on what device the last solver was created on. So if one creates 8 \ac{SOR} solvers on a system with 4 devices the first solver is on device 0 the second on device 1 and so forth. The fifth solver is again created on the device 0. This is not always an ideal distribution. For example if the first solver and the fifth solver always take longer for some reason, the other three devices are underutilized. But it is a simple construct to implement which may be changed later on.\newline
 To restrict the use of a single GPU device by multiple threads semaphores are used. The concurrent threads per device can be controlled by a macro definition \textit{(THREADS\_PER\_DEVICE - defaults to 2)}. It is useful to have multiple threads execute on a single device to increase GPU utilization since then memory transfers can overlap with kernel executions. If a solver is executed it first tries to acquire a permit from the semaphore associated to the device. If non is available the thread is blocked. After the execution of the solver the permit is released and waiting threads are notified.
+
+\subsection{Windows compilation}
+The simulation code can be compiled on Windows systems using MinGW or any other GCC port to Windows. But for now CUDA only supports compilation on Windows through the Microsoft C++ (MSVC) compiler thus the CUDA code cannot be compiled with GCC on Windows. But it should be possible to compile the CUDA library with MSVC and link against it in a later stage though this has not been tested or set up.
 
 
 \end{document}
