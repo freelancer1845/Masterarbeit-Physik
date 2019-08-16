@@ -10,7 +10,7 @@ There are three different main problems to solve in this simulation.
 \end{itemize}
 
 \subsection{Derivatives}
-Since a simple grid is chosen for discretization standard finite-differences schemes are used for the derivatives and a special scheme for the poisson brackets (arakawa-scheme) \cite{arakawa}.\newline
+Since a simple grid is chosen for discretization standard finite-differences schemes are used for the derivatives and a special scheme for the Poisson brackets (Arakawa-scheme) \cite{arakawa}.\newline
 These are the discretizations used throughout the simulation:\newline
 \textit{Coordinates not involved are omitted for readability. $T_{i + 1} = T_i + h_T$ for T in $\{z, x, y\}$}
 \begin{itemize}
@@ -32,11 +32,11 @@ These are the discretizations used throughout the simulation:\newline
     \begin{equation}
            \partial_z^2f(z_i,x,y) \approx \frac{f(z_{i+1})-2\cdot f(z_i)+ f(z_{i-1})}{h_z^2} + O(h_z)
     \end{equation}
-    \item Fourth derivative in perpendicular direction $\nabla_\perp \cdot \nabla_\perp$\\
+    \item Fourth derivative in perpendicular direction $\Delta_\perp \cdot \Delta_\perp$\\
     \begin{footnotesize}
     \begin{equation}
     \begin{split}
-    \nabla_\perp^2f(z,x_i,y_j) \approx \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\ + \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\  + O(h_x^2) + O(h_x^2)
+    \Delta_\perp^2f(z,x_i,y_j) \approx \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_x^4}  \\ + \frac{f(x_{i+2},y_j) - 4 \cdot f(x_{i+1},y_j) +6\cdot f(x_i,y_j) -4 \cdot f(x_{i-1},y_j) + f(x_{i-2}, y_j)}{h_y^4}  \\  + O(h_x^2) + O(h_y^2)
     \end{split}
     \end{equation}
 \end{footnotesize}      %$[f(x,y),g(x,y)]_\perp = \partial_x f \partial_y g - \partial_y f \partial_x g$
@@ -74,10 +74,10 @@ where $\lambda_s$ represents sources and sinks and $n$ denotes the time step in 
      + &\frac{6}{11}\Delta t \cdot (3 \cdot F(\Phi)^{n+1} - 3 \cdot F(\Phi)^{n} + F(\Phi)^{n-1} + \lambda_s)
 \end{split}
 \end{equation}
-This scheme has been shown to be stable at high \ac{CFL} number for the incompressible navier-stokes equation \cite{KARNIADAKIS1991414}.
+This scheme has been shown to be stable at high \ac{CFL} number for the incompressible Navier-Stokes equation \cite{KARNIADAKIS1991414}.
 
 \subsection{Poisson Equation solver}
-There are two poisson-like equations to solve. The frist one is necessary to apply the padé-approximation of the gyro-averaging operator and is solved using a fourier decomposition. The second one is the polarization equation as described in \autoref{sec:isothermalequations} and is solved using a \ac{SOR} gauss-seidel-iterator.
+There are two Poisson-like equations to solve. The first one is necessary to apply the Padé-approximation of the gyro-averaging operator and is solved using a Fourier decomposition. The second one is the polarization equation as described in \autoref{sec:isothermalequations} and is solved using a \ac{SOR} Gauss-Seidel-iterator.
 
 \subsubsection{Gyro-Averaging - Fourier Solver}
 The gyro-averaging operation has the form:
@@ -104,11 +104,11 @@ The polarization equation (\autoref{eq:polarization}) has the form:
 \begin{equation}
     \nabla\left( A(x, y) \nabla U(x, y)\right) = F(x, y)
 \end{equation}
-The discretization is presented here \cite{DielectricPoisson}. The problem solved in the reference evolves from the variable dielectric poisson equation which is of a similar form. To solve the linear system a \ac{SOR} iterator is implemented which is further described here \cite{SORPaper}. Implementation details are presented in \autoref{sec:sor-solver-implementation}.
+The discretization is presented here \cite{DielectricPoisson}. The problem solved in the reference evolves from the variable dielectric Poisson equation which is of a similar form. To solve the linear system a \ac{SOR} iterator is implemented which is further described here \cite{SORPaper}. Implementation details are presented in \autoref{sec:sor-solver-implementation}.
 
 \subsection{Choosing viscosities}
 The viscosities involved in the evolution equations are fundamental for the convergence of the simulation. Currently we only have a heuristic approach for finding appropriate values.\newline
 The \textit{quality} of the viscosities is derived from turbulence spectra of the densities, parallel velocities, potential and vorticity. Good parameters show the characteristic turbulence spectrum of energy dissipation via an energy cascade \cite{TurbulentSpectra}.\newline
-Viscosities that are to high give raise to artificial waves and eddies in the length scale of the distance between grid points and/or block the full development of a energy cascade. On the other hand viscosities that are too low hinder the full dissipation of smaller eddies which then in turn never completely decay. Since they are in length scale of grid distances they cannot be resolved sufficiently by the simulation and thus result into unwanted artificial artifacts.
+Viscosities that are to high give raise to artificial waves and eddies in the length scale of the distance between grid points and/or block the full development of an energy cascade. On the other hand viscosities that are too low hinder the full dissipation of smaller eddies which then in turn never completely decay. Since they are in length scale of grid distances they cannot be resolved sufficiently by the simulation and thus result into unwanted artificial artifacts.
 
 \end{document}

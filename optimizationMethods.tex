@@ -16,13 +16,13 @@ for (int z = domain.g_z; z < domain.n_z + domain.g_z; z++) {
 }
 \end{lstlisting}
 Usually the outer loops only has a few iterations $\sim 8$ and the inner ones have 100-1000 iterations.
-If there are no data dependencies between iterations the most inner loop can be vectorzied by the compiler quite easily. This is a simple straight forward optimization where one usually swaps memory space (which is abundant in our case) against computation speed. For example if we wanted to approximate the derivative using a forward difference scheme a loop of this form
+If there are no data dependencies between iterations the most inner loop can be vectorized by the compiler quite easily. This is a simple straight forward optimization where one usually swaps memory space (which is abundant in our case) against computation speed. For example if we wanted to approximate the derivative using a forward difference scheme a loop of this form
 \begin{lstlisting}
 for (int x = 0; x < n_x - 1; x++) {
   array[x] = (array[x + 1] - array[x]) / h_x    
 }
 \end{lstlisting}
-where the memory is reused, the compiler won't be able to vectorize. Whereas if we save the result in a second array this would not be a problem for the compiler.
+where the memory is reused, the compiler won't be able to use vectorization. Whereas if we save the result in a second array this would not be a problem for the compiler.
 \subsection{OpenMP} \label{sec:open-mp-method}
 Another simple way to parallelize such loops is via OpenMP and its \textit{worksharing constructs}. This mainly applies to the outer loop since worksharing to threads is only effective if the shared work is heavy enough. There are different options available. The most straight forward is the following:
 \begin{lstlisting}

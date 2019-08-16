@@ -48,7 +48,7 @@ On a restart the only necessary step is to initialize the time stepper since the
 \subsection{Gyroaveraging of Ions {\small "src/models/isothermal/gyroaveraging.cpp"}}
 \label{sec:components-gryoaverage}
 The work consists of applying the transformation from \autoref{eq:gyro-transformation} and then doing two Fourier transformation. Finally the result is written back. This is done in \textit{Poisson::fftwSolver2D} in file \textit{"src/algorithms/poisson/fftwsolver.cpp"}.
-A second implementation is available executing the code on the GPU using the \textit{cufft}-library from the nvidia cuda toolkit. The steps are shown in \autoref{eq:gyroaveraging-steps}. The non fourier transformation is always done on the CPU but the fourier transformation may either be executed on the CPU or the GPU.
+A second implementation is available executing the code on the GPU using the \textit{cufft}-library from the nvidia cuda toolkit. The steps are shown in \autoref{eq:gyroaveraging-steps}. The non Fourier transformation is always done on the CPU but the Fourier transformation may either be executed on the CPU or the GPU.
 
 \begin{equation}\label{eq:gyroaveraging-steps}
     \begin{split}

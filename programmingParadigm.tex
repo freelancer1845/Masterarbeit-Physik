@@ -51,14 +51,14 @@ class Density3d {
   T m_DeltaInv;
   T m_NuParallel;
   T m_NuPerpendicular;
-  T m_ViscocityDampingFactor;
+  T m_ViscosityDampingFactor;
 
   Time::KarniadakisStepper<T> m_Stepper;
 
  public:
   Density3d(Domain::Regular::SOL3D<T>& domain, Species<T>& species,
             const T m_DeltaInv, const T m_NuParallel,
-            const T m_NuPerpendicular, const T viscocityDampingFactor);
+            const T m_NuPerpendicular, const T viscosityDampingFactor);
 
   void initialize();
 

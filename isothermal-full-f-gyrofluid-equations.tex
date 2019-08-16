@@ -2,7 +2,7 @@
  
 \begin{document}
 
-The equations are stated as they are. A mathematical derivation can be found in \cite{HeldDisseration}. It is essentially a set of six equations. Two density equations (\autoref{eq:electron_density}, \autoref{eq:ion_density}), two parallel velocity equations (\autoref{eq:electron_velocity}, \autoref{eq:ion_velocity}), the polarization equation (\autoref{eq:polarization}) and a closure approximation for the gyro averaging operator $\Gamma_1$.
+The equations are stated without proper derivation (a mathematical derivation can be found in \cite{HeldDisseration}). It is essentially a set of six equations. Two density equations (\autoref{eq:electron_density}, \autoref{eq:ion_density}), two parallel velocity equations (\autoref{eq:electron_velocity}, \autoref{eq:ion_velocity}), the polarization equation (\autoref{eq:polarization}) and a closure approximation for the gyro averaging operator $\Gamma_1$.
 
 \subsection{Density Equations}
 
@@ -12,14 +12,14 @@ The equations are stated as they are. A mathematical derivation can be found in 
     \overbrace{
     - \mathcal{K}(\Tilde{n}_e)
     - \mathcal{K}(\phi)
-    }^{\perp \, Diffusion}
+    }^{\perp \, Curvature}
     \overbrace{
     - \frac{1}{B(z)}\nabla_\parallel (v_{e\parallel} n_e)
-    }^{\parallel \, Diffusion}
+    }^{\parallel \, Current\,\, Divergence}
     \overbrace{
-    + \mu_\parallel \nabla_\parallel^2\Tilde{n}_e
-    - \mu_\perp \Delta^2_\perp\Tilde{n}_e
-    }^{Sources, Sinks}
+    + \nu_\parallel \nabla_\parallel^2\Tilde{n}_e
+    - \nu_\perp \Delta^2_\perp\Tilde{n}_e
+    }^{Artificial\,\, Viscosities}
     \label{eq:electron_density}
     \\
     \partial_t N_i &=
@@ -27,8 +27,8 @@ The equations are stated as they are. A mathematical derivation can be found in 
     - \mathcal{K}(\Tilde{N}_i)
     - \mathcal{K}(\Tilde{\psi_i})
     - \frac{1}{B(z)}\nabla_\parallel (v_{i\parallel} N_i)
-    + \mu_\parallel \nabla_\parallel^2\Tilde{N}_i
-    - \mu_\perp \Delta^2_\perp\Tilde{N}_i \label{eq:ion_density}
+    + \nu_\parallel \nabla_\parallel^2\Tilde{N}_i
+    - \nu_\perp \Delta^2_\perp\Tilde{N}_i \label{eq:ion_density}
 \end{align}
 
 where
@@ -42,40 +42,40 @@ where
 \end{align}
 \begin{itemize}
     \item $\Tilde{\partial_{z}}$ represents the shear-shifted derivative in z-direction.
-    \item $\Tilde{X} := log(X)$
-    \item $B(z) := $ Magnetic-Flux in Z-Plane
+    \item $\Tilde{X} := ln(X)$
+    \item $B(z) := $ Magnetic-Field in z-plane
 \end{itemize}
 
 
 \autoref{eq:electron_density} represents the evolution of the electron density field.
-\autoref{eq:ion_density} represents the evolution of the density of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected.\todo{Find a reference or write equations down} \newline
-The last two terms in both equations are needed for numerical stability of our schemes but may be regarded as sources and sinks. 
+\autoref{eq:ion_density} represents the evolution of the gyrocenter density of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected.\todo{Find a reference or write equations down} \newline
+The last two terms in both equations are needed for numerical stability of our schemes but may be regarded as sinks.
 
 
 \subsection{Parallel Velocity Equations}
-The velocity equations are restricted to the parallel direction which follows from the "frozen-flux-theorem" which states that particle motion is strongly restricted to the magnetic field lines \todo{Ref}. Thus it is convenient to align the parallel direction ($z$) to the magnetic flux.
+For the velocities only the parallel part needs to be solved explicitly. The perpendicular part is purely $\mathrm{E}\times \mathrm{B}$ convection which is contained in the electric potential $\phi$. This is a result of the \textit{drift approximation} where the strong magnetic field in parallel direction forces the particles to a fast gyration around the field lines. The perpendicular velocity can then be calculated from the electric and magnetic field considering the Lorentz Force and is decoupled from the parallel velocity.
 
 
 \begin{align}
 \begin{split}
-    \alpha_e &=  -\delta^-1 \left[v_{e\parallel}, \phi_\perp\right]
-    - 2\tau_e \mathcal{K}( v_{e\parallel})
-    - 2\tau_e^2 \mathcal{K}(\Tilde{n}_e)
-    - \tau_e \mathcal{K}( \phi)
-    - \nabla_\parallel (\phi + \tau_e n_e)
-    - \hat{c}\, \mathrm{J}\\
-    & \quad + \mu_\parallel \nabla_\parallel^2\Tilde{\alpha}_e 
-    - \mu_\perp \Delta^2\Tilde{\alpha}_e \label{eq:electron_velocity}
+    \alpha_e &=  -\frac{\mu_e \hat{\epsilon}}{\delta} \left[v_{e\parallel}, \phi_\perp\right]_\perp
+    - 2 \cdot \tau_e \mu_e \hat{\epsilon} \cdot \mathcal{K}( v_{e\parallel})
+    - 2 \cdot \tau_e^2 \mu_e \hat{\epsilon} \cdot \mathcal{K}(\Tilde{n}_e)
+    - 0.5 \cdot \tau_e \mu_e \hat{\epsilon} \cdot \mathcal{K}( \phi)\\
+    & \quad - \nabla_\parallel (\phi + \tau_e n_e)
+    - \hat{c} \cdot \mathrm{J}
+    + \nu_\parallel \nabla_\parallel^2\Tilde{\alpha}_e 
+    - \nu_\perp \Delta^2\Tilde{\alpha}_e \label{eq:electron_velocity}
 \end{split}\\
 \begin{split}
-    \alpha_i &= -\delta^-1  \left[v_{i\parallel}, \phi_\perp\right]
-    - 2\tau_i \mathcal{K}(v_{i\parallel})
-    - 2\tau_i^2 \mathcal{K}(N_i)
-    - \tau_i \mathcal{K}(\psi)
-    - \nabla_\parallel (\psi + \tau_i N_i)
-    - \hat{c}\, \mathrm{J}\\
-    &\quad + \mu_\parallel\nabla_\parallel^2\Tilde{\alpha}_i 
-    - \mu_\perp \Delta^2\Tilde{\alpha}_i \label{eq:ion_velocity}
+    \alpha_i &= -\frac{\mu_i \hat{\epsilon}}{\delta}  \left[v_{i\parallel}, \phi_\perp\right]_\perp
+    - 2 \cdot \tau_i \mu_i \hat{\epsilon} \cdot \mathcal{K}(v_{i\parallel})
+    - 2 \cdot \tau_i^2 \mu_i \hat{\epsilon} \cdot \mathcal{K}(N_i)
+    - 0.5 \cdot \tau_i \mu_i \hat{\epsilon} \cdot \mathcal{K}(\psi)\\
+    &\quad - \nabla_\parallel (\psi + \tau_i N_i)
+    - \hat{c} \cdot  \mathrm{J}
+    + \nu_\parallel\nabla_\parallel^2\Tilde{\alpha}_i 
+    - \nu_\perp \Delta^2\Tilde{\alpha}_i \label{eq:ion_velocity}
 \end{split}
 \end{align}
 
@@ -94,11 +94,15 @@ As a simplification we assume $\hat{\beta} \approx 0$ and thus Amperes Law is no
 \begin{align}
     \nabla \cdot \left( \sum_s \mu_s n_s \right) \nabla \phi &= z_e n_e + \sum_i z_i \, \cdot \, N_i \label{eq:polarization}
 \end{align}
-The polarization equation connects the individual species. On the right hand side essentially stands the (gyro-averaged) charge distribution. The left-hand side contains \ac{FLR} effects via the non-linearity. A typical assumption is that $\alpha := \sum_s \mu_s n_s$ can be expanded in space and or time ($\alpha \approx \alpha_0 + \alpha_1 \epsilon + ...$ where $\epsilon$ represents the Larmor radius length scale) and that $\alpha_1 \epsilon \ll \alpha_0$ as well as $\alpha_0$ is constant. Three different simplifications of that kind will be presented in \autoref{sec:polarization-linearizations} and evaluated in \autoref{sec:polarization_equation_evaluation}. 
+The polarization equation connects the individual species by the quasi-neutrality condition for a plasma. This is a non linear partial differential equation of second order. To handle the non linearity a typical assumption is that $\sigma := \sum_s \mu_s n_s$ can be expanded in space and or time ($\sigma \approx \sigma_0 + \sigma_1 \epsilon + ...$ where $\epsilon$ represents the Larmor radius length scale) and that $\sigma_1 \epsilon \ll \sigma_0$ as well as $\sigma_0$ is constant. Three different simplifications of that kind will be presented in \autoref{sec:polarization-linearizations} and evaluated in \autoref{sec:polarization_equation_evaluation}. 
 
+
+\begin{blockquote}
+    On the right hand side essentially stands the (gyro-averaged) charge distribution. The left-hand side contains \ac{FLR} effects via the non-linearity.
+\end{blockquote}
 
 \subsection{Gyro-Averaging Operator}
-Since we have a Gryofluid model we need a transformation from the actual quantities into the gyro averaged quantities. In our case we only need $\Gamma_1$ and $\Gamma_1^\dagger$. A derivation and further explanation can be found in \cite{HeldDisseration}.
+Since we have a Gyrofluid model we need a transformation from the actual quantities into the gyro averaged quantities. In our case we only need $\Gamma_1$ and $\Gamma_1^\dagger$. A derivation and further explanation can be found in \cite{HeldDisseration}.
 \begin{align}
     \label{eq:gyro-averaging-opeartor}
     \Gamma_1 = \left(1- \frac{1}{2} \rho^2 \nabla_\perp^2\right)^{-1}
