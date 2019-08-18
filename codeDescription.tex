@@ -58,16 +58,23 @@ A second implementation is available executing the code on the GPU using the \te
     \end{split}
 \end{equation}
 
-\subsection{External Sources {\small "src/models/isothermal/external3d.cpp"}}
+\subsection{External Sources/Sinks {\small "src/models/isothermal/external3d.cpp"}}
 \label{sec:components-external}
-This step is necessary to keep the simulation stable at the edges. There is a zone on the left and on the right x-boundary. The borders of the zone are smoothed out to prevent high gradients. At first the gyroaveraged density of the ions is forced to the background density. Afterwards $\Gamma_0^{-1}$ is applied and the other densities are forced to equal this inverse:
+This step is necessary to keep the simulation stable at the edges. There is a zone on the left and on the right x-boundary that artificially forces the densities and parallel velocities to \textit{practical} values. The borders of the zone are smoothed out to prevent high gradients. At first the gyroaveraged density of the ions is forced to the background density. Afterwards $\Gamma_0^{-1}$ is applied and the other densities are forced to equal this inverse (individually for each coordinate):
 
-\begin{align}
-    N_i &= (N_i - n_0) \cdot \alpha(x) + n_0\\
-    n_e &= (n_e - \Gamma_1^{-1}N_i) \cdot \alpha(x) + \Gamma_1^{-1}N_i\\
-    n_i &= (n_i - \Gamma_1^{-1}N_i) \cdot \alpha(x) + \Gamma_1^{-1}N_i
-\end{align}
- \todo{Chart of $\alpha(x)$}
+\begin{equation}
+    \begin{split}
+        N_i &= (N_i - n_0) \cdot \alpha(x) + n_0\\
+        n_s &= (n_s - \Gamma_1^{-1}N_i) \cdot \alpha(x) + \Gamma_1^{-1}N_i\\
+        v_{s\parallel} &= \alpha(x) \cdot v_{s\parallel}
+    \end{split}
+\end{equation}
+A visualization of $\alpha(x)$ is given in \autoref{fig:alphavisualization}.
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth]{pdfs/alphavisualization.pdf}
+    \caption{Visualization of $\alpha(x)$ as profile for external sources and sinks.}
+    \label{fig:alphavisualization}
+\end{figure}
  
  \subsection{Polarization Equation {\small "src/models/isothermal/polarization3d.cpp"}}
 \label{sec:components-polarization}
