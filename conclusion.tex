@@ -1,0 +1,23 @@
+\documentclass[master.tex]{subfiles}
+ 
+\begin{document}
+
+\chapter{Conclusion}
+The presented theses consisted out of three major parts. At first an existing Full-F Gyrofluid simulation code was revisited and completely rewritten. The main objective was to have a clearly structured code such that parts of it can be reused or easily extended. Afterwards strictly computational optimizations were employed and in the end the effect of different grades of linearizations to the polarization equation regarding the Debye-Shielding term were evaluated using this new simulation code.
+
+
+
+\paragraph{Computer Science}
+The numerical schemes for solving the Isothermal Full-F Gyrofluid model presented in \autoref{sec:isothermalequations} were (for the most part) already given by the existing simulation code but the realization into a functional understandable and extendable simulation code was conducted as first part of the thesis. Because of the complexity given by the multiple equations and numerical schemes that needed to be implemented the resulting simulation code becomes naturally very complex. A great effort has been made in trying to keep the resulting (complex) code understandable for future probably non computer science researchers \footnote{It should be noted that the coding was done by a physics student and as such does not always follow highest coding standards.}. The equations and numerical schemes were abstracted into objects following \ac{OOP}. This approach seemed useful because of the stateful character of a simulation. By doing so it became naturally clearer what parts of the simulation are independent which is an important aspect because these parts can now be exchanged or improved individually. It also gives hints for simple optimizations.
+
+
+\paragraph{Optimizations}
+After the code was structured multiple optimizations were employed. Efforts have been made in single core (vectorization), multi core (OpenMP) and GPU (CUDA) parallelism. Some of them where rather complex (Sections and GPU parallelism) others simple and straight forward and automatically given by the structure of the simulation code (Vectorization and OpenMP For Loops). For example by turning on optimized compiling most if not all of the loops in y-direction where vectorized for faster execution on modern CPUs.\newline
+CPU parallelism using OpenMP could have been implemented using \textit{for}-worksharing but \textit{taskloop}-constructs were preferred that allowed for even higher parallelism (sections parallelism). This made effective CPU parallelism possible even on many core systems (\#>$n_z$). But more work can be done here since task distribution is not always optimal especially when working with multi socket systems. Another common parallelism technique would be using multiple nodes and connecting them using \ac{MPI}. Because of the implementation of ghost cells adding \ac{MPI} (and thus multi node parallelism) will most likely be easier in the future.\newline
+Two parts of the simulation (\ac{SOR} solver and the gyro averaging operator) where implemented on the GPU and multi GPU systems using the Nvidia CUDA framework. These where identified as a major bottlenecks beforehand and the evaluation of the optimizations shows speedups of approximately three for higher resolutions compared to the CPU only variants. Using this optimized code three different linearizations of the polarization equation (\autoref{eq:polarization}) where evaluated.
+
+\paragraph{Effect of linearizations on Edge Turbulence}
+
+
+wfewef
+\end{document}
