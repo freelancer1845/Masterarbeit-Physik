@@ -5,10 +5,10 @@
 
 In this chapter the used optimization methods are described and evaluated. Since a deeper discussion would be out of scope only a brief overview is given. Currently almost 50\% of the simulation time is spend on the SOR-Solver for the polarization equation. As a consequence most of the work was spend on the SOR-Solver.
 \section{OpenMP}
-The complete calculation of the \ac{rhs} for the density and parallel velocities equations can be parallelized without negative consequences. Most gain gives us the parallelization over the z-direction. This is achieved with a simple OpenMP \textit{"for"} worksharing construct as is it is described in \autoref{sec:open-mp-method}. Parallelization in x-direction is only effective for 2D simulations or for very high resolutions. Using the construct on the y-direction is not useful since this loop is always vectorized by the compiler yielding much higher performance. Since the SOR-Solver only works in xy-direction the parallelization in z-direction is effective as well.
+The complete calculation of the \ac{rhs} for the density and parallel velocities equations can be parallelized without negative consequences. Most gain gives us the parallelization over the z-direction. This is achieved with a simple OpenMP \textit{"taskloop"} worksharing construct as is it is described in \autoref{sec:open-mp-method}. Parallelization in x-direction is only effective for 2D simulations or for very high resolutions. Using the construct on the y-direction is not useful since this loop is always vectorized by the compiler yielding much higher performance. Since the SOR-Solver only works in xy-direction the parallelization in z-direction is effective as well (each solver XY-Plane is solved in parallel). Furthermore sections parallelism is implemented where possible.
 
 \section{Nvidia-CUDA}
-To further optimize the SOR-solver and reduce execution time the iteration is moved to the graphics card. This creates some overhead since data has to be moved back and forth to the GPU. Also since there is usually only one GPU available the parallelization in z-direction is not possible anymore. Scaling for different systems is presented later.
+To further optimize the SOR-solver and reduce execution time the iteration is moved to the graphics card. This creates some overhead since data has to be moved back and forth to the GPU. Also since there is usually only one GPU available the parallelization in z-direction is not possible anymore. Scaling for different systems is presented later. The kernel implementation uses the speedup gained from \textit{Shared Memory} access in connection to coalesced memory loading.
 
 \section{Evaluation}
 To evaluate performance in a realistic situation it is measured using an actual simulation. A single measurement consists of 1000 iterations where the execution time is measured each 20 iterations. Also measured is how much the different steps of each iteration take.\newline
@@ -32,8 +32,8 @@ Five sections of the code are measured individually as well as the global execut
     \item Polarization Equation
     \item Gyroaveraging
     \item Right Hand Side (RHS) of Equations (\textit{calculation of $F(\Phi)^{n+1}$ in \autoref{eq:karnidakis-scheme}})
-    \item Time Stepping (\textit{Calculation of \autoref{eq:karnidakis-scheme}}
-    \item External Boundaries
+    \item Time Stepping (\textit{Calculation of \autoref{eq:karnidakis-scheme}})
+    \item External Boundaries (involves gyroaveraging)
 \end{itemize}
 Each data point taken is the mean value out of 20 iterations. In \autoref{fig:k40_gpu_vs_cpu} the complete data set for 8x128x128 on the \ac{K40} and \ac{K40C} systems is presented. It is clearly visible that the first point represents an outlier which is explained by the fact that the initial value for the polarization solver is far off from the solution. It is therefore excluded from further evaluations. 
 

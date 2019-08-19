@@ -1,5 +1,6 @@
 \documentclass[master.tex]{subfiles}
  
+\newcommand{\meanxy}[1]{\left<#1\right>_{z,y}}
 \begin{document}
 
 
@@ -33,7 +34,7 @@ Now we can compare this to the moment equations written down earlier and identif
     \Lambda(z,x,y) &= \partial_x \phi_e :\, Poloidal\,Flow
 \end{align}
 
-Here the turbulent flow gives us information on how much of our quantities is transported outwards into the \ac{SOL} and the poloidal flow represents perpendicular (to the magnetic field) transport parallel to the separatrix.
+Here the turbulent flow gives us information on how much of our quantities is transported outwards into the \ac{SOL} and the poloidal flow represents perpendicular (to the magnetic field) transport parallel to the separatrix. They are connected to the perpendicular velocities via the Lorentz-force since $E = -\nabla \phi$.
 
 \subsection{Simulation Quantities}\label{sec:simulation_quantities}
 
@@ -45,8 +46,11 @@ which essentially is the mean value over the y-direction.\\
 We now define these quantities:
 
 \begin{itemize}
-    \item $\overline{\Gamma}_{core} = \alpha \sum_{z, y, x \leq \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in Core Plasma}
+    \item $\overline{\Gamma}_{Core} = \alpha \sum_{z, y, x \leq \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in Core Plasma}
     \item $\overline{\Gamma}_{SOL} = \alpha \sum_{z, y, x > \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in \ac{SOL} Plasma}
+    \item $\meanxy{\phi_e}$ : \textit{Zonal Potential}
+    \item $\partial_x \meanxy{\phi_e}$ : \textit{Zonal Flow}
+    \item $\partial_{xx}\meanxy{\phi_e}$ : \textit{ZOnal Flow Potential / Vorticity}
 \end{itemize}
 
 

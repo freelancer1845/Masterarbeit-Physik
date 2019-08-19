@@ -48,7 +48,7 @@ where
 
 
 \autoref{eq:electron_density} represents the evolution of the electron density field.
-\autoref{eq:ion_density} represents the evolution of the gyrocenter density of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected.\todo{Find a reference or write equations down} \newline
+\autoref{eq:ion_density} represents the evolution of the gyrocenter density of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected ($m_e << m_i$, $z_e = z_i$). \newline
 The last two terms in both equations are needed for numerical stability of our schemes but may be regarded as sinks.
 
 
@@ -98,7 +98,7 @@ The polarization equation connects the individual species by the quasi-neutralit
 
 
 \begin{blockquote}
-    On the right hand side essentially stands the (gyro-averaged) charge distribution. The left-hand side contains \ac{FLR} effects via the non-linearity.
+    The non-linearity term on the left hand side is also called the "Debye-Shielding" term.
 \end{blockquote}
 
 \subsection{Gyro-Averaging Operator}
@@ -127,7 +127,7 @@ In \autoref{eq:general-poisson} we assume $N(x,y, t) \approx \overline{N}_0$ for
 \begin{equation}
     \Delta \Psi(x,y,t) = \frac{\rho(x,y,t)}{\overline{N}_0}
 \end{equation}
-This approximation would be valid if $N(x,y, 0) \approx N(x,y,t)$ and $\nabla N(x,y,0) \approx 0$. In some contexts this is also referred to as  $\delta-f$ or \textit{local model} whereas the non linearized form is called a \textit{global model}.
+This approximation would be valid if $N(x,y, 0) \approx N(x,y,t)$ and $\nabla N(x,y,0) \approx 0$. In some contexts this is also referred to as  $\delta$-f or \textit{local model} whereas the non linearized form is called a \textit{global model}.
 
 \subsection{Time-independent Radial Background Profile}
 In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t = 0)\right>_y$. This reduces the general poisson equation to:
@@ -143,6 +143,6 @@ In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t)\right>_
 \end{equation}
 This would be valid if $\partial_y N \approx 0$.
 \newline
-Evaluation and results are found in \autoref{sec:polarization_equation_evaluation}. It should be noted that the first and second linearization naturally depend on the initial density profile and thus it needs to be chosen carefully.
+Evaluation and results are found in \autoref{sec:polarization_equation_evaluation}. It should be noted that the first and second linearization naturally depend on the initial density profile and thus it needs to be chosen carefully. Another option would be to run the simulation without any of thoses linearizations and then use the final density profile for next simulation \footnote{This is not done here but the initial profile is chosen such that it resembles the final profile}.
 
 \end{document}

@@ -14,7 +14,7 @@ The execution contains three distinct steps where the last two run in parallel. 
     \item Calculate new time step for each equation
     \item Update derived quantities
 \end{enumerate}
-Depending on the parameters data output steps are performed. This is not done every iteration to save computation speed since input output operations are typically slow.
+Depending on the parameters data output steps are performed. This is not done every iteration to save computation time since input output operations are typically slow.
 \begin{enumerate}
     \item Every 20 iterations calculate combined quantities (Turbulent Flow...)
     \item Write data to hard drive depending on current iteration and parameters
@@ -40,6 +40,8 @@ This further \textit{seeds} the turbulence. The last thing to do is to set the p
 \begin{equation}
     \xi^{(-i)} = \xi_{init} \colon i = 0, 1, 2
 \end{equation}
+
+All other quantities are set to 0.
 
 
 \subsubsection{Restart}
@@ -127,7 +129,7 @@ A moderately high level of abstraction is employed in the code base to allow mod
 \end{figure}
 
 \section{Input}
-The simulation parameters are provided via a \ac{JSON} configuration file. The default file name is \textit{"config.json"} but one may specify another file using the \textit{"-c <config-file>"} command line option. The available parameters are described in the wiki of the repository (\href{https://git.uibk.ac.at/csat8630/t3g-cmake/wikis/parameters}{Link-Wiki-Repository}). It is also possible to restart computation from a data file using \textit{"-r <data-file>"}. This restarts from the last saved iteration. One may also provide a specific data set to restart from using \textit{"-s <iteration-number>"}. For Example:
+The simulation parameters are provided via a \ac{JSON} configuration file. The default file name is \textit{"config.json"} but one may specify another file using the \textit{"-c <config-file>"} command line option. The available parameters are described in the wiki of the repository (\href{https://git.uibk.ac.at/csat8630/t3g-cmake/wikis/parameters}{Link-Wiki-Repository}\footnote{https://git.uibk.ac.at/csat8630/t3g-cmake/wikis/parameters}). It is also possible to restart computation from a data file using \textit{"-r <data-file>"}. This restarts from the last saved iteration. One may also provide a specific data set to restart from using \textit{"-s <iteration-number>"}. For Example:
 \begin{quote}
     \small
 ./Isothermal3d -r "\url{~/data/specialRun.hdf5}" -s 10001
@@ -141,13 +143,13 @@ A running simulation can not be changed though this may be implemented quite eas
 
 \section{Output}
 \label{sec:output}
-The output is collected into a single \ac{HDF5} file. The structure for the Isothermal model simulation is discribed here \textit{\href{https://git.uibk.ac.at/csat8630/t3g-cmake/wikis/Isothermal/Output}{Wiki Isothermal Output}}.
+The output is collected into a single \ac{HDF5} file. The file structure for the Isothermal model simulation is discribed here \textit{\href{https://git.uibk.ac.at/csat8630/t3g-cmake/wikis/Isothermal/Output}{Wiki Isothermal Output}}\footnote{https://git.uibk.ac.at/csat8630/t3g-cmake/wikis/Isothermal/Output}.
 
 \section{Python Plotter}
 The repository contains a small python application to visualize data. It uses \textit{PyQt5} and \textit{matplotlib}. It is found in the folder \textit{"plotter"} and can be started using
 \begin{quote}
     python main.py
 \end{quote}
-in a suitable environment. The application creates 2D heatmaps of the densities, parallel velocities, potential and vorticity as well as radial profiles. Further more it can plot the energetics output.
+in a suitable environment. The application creates 2D heatmaps of the densities, parallel velocities, potential and vorticity as well as radial profiles. Further more it can plot the energetics output and visualize turbulence spectra of densities, potential and general vorticity.
 
 \end{document}
