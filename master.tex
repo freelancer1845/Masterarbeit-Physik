@@ -173,31 +173,33 @@ Unterschrift: & & \rule{7cm}{0.4pt}
 
 \thispagestyle{empty}
 
+\setcounter{page}{1}
+\pagenumbering{Roman}
+
+\chapter*{Zusammenfassung}
+\addcontentsline{toc}{chapter}{Zusammenfassung}
+The content of this thesis consists of three parts and targets the rewrite and optimization of an existing Full-F Gyrofluid simulation code that models the edge region of a tokamak fusion reactor and the evaluation of linearizations to the Poisson equation originating from the neutrality constraint of a plasma. First the physical and numerical framework of the simulation is stated and then the realization into a simulation code is described. Afterwards different optimizations targeting single core, multi core, GPU and multi GPU are presented. The GPU optimizations are compared to the optimized CPU implementations which show speedups larger than three. In the end the Debye-Shielding term of the polarization equation is evaluated for two different resolutions and parameter sets that do not show large and obvious differences for the different grades of linearizations. The differences mostly show in the convergences of the solver but not in the turbulent flow measurements.
+
+\begin{otherlanguage*}{english}
+  {\let\clearpage\relax \chapter*{Abstract}}
+\addcontentsline{toc}{chapter}{Abstract}
+The thesis consists of three parts and targets the rewrite and optimization of an existing Full-F Gyrofluid simulation code that models the edge region of a tokamak fusion reactor and the evaluation of linearizations to the Poisson equation originating from the neutrality constraint of a plasma. First the physical and numerical framework of the simulation is stated and then the realization into a simulation code is described. Afterwards different optimizations targeting single core, multi core, GPU and multi GPU are presented. The GPU optimizations are compared to the optimized CPU implementations which show speedups larger than three for the GPU implementations. In the end the Debye-Shielding term of the polarization equation is evaluated for two parameter sets that do not show large and obvious differences for the different grades of linearizations. The differences mostly show in the convergences of the solver but not in the turbulent flow measurements.
+\end{otherlanguage*}
+
+
+
 \renewcommand{\baselinestretch}{1.00}\normalsize
 
 \tableofcontents
-\setcounter{page}{1}
-\pagenumbering{Roman}
+
 \listoffigures
+\chapter*{Acronyms}
+\subfile{acronyms}
 \renewcommand{\baselinestretch}{1.5}\normalsize
 
 \newpage
 \setcounter{page}{1}
 \pagenumbering{arabic}
-
-\chapter*{Zusammenfassung}
-\addcontentsline{toc}{chapter}{Zusammenfassung}
-Deutsches Abstract
-
-\begin{otherlanguage*}{english}
-\chapter*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
-Englisches Abstract
-\end{otherlanguage*}
-
-
-
-
 
 \chapter{Introduction}
 
@@ -266,8 +268,7 @@ The complete project is saved on the University git server and can be found at \
 
 \bibliographystyle{unsrt} %apalike
 \bibliography{literatur}
-\chapter{Acronyms}
-\subfile{acronyms}
+
 
 
 

@@ -33,7 +33,7 @@ At first the simulation develops strong turbulence and high fluctuations which r
 
 \begin{figure}[!hbtp]
     \includegraphics[width=\linewidth]{pdfs/equilibrium_state_low.pdf}
-    \caption{Temporal evolution of $E_n\propto \int_{[z,x,y} n_e^2 dzdxdy$ and the parallel kinetic energy (see \autoref{sec:polar_parallel_velocities}) both restricted to Core and \ac{SOL} region. After 80,000 iterations a steady state is reached.}
+    \caption{Temporal evolution of ($E_n$ \autoref{sec:fluid-dynamics}) and the parallel kinetic energy (see \autoref{sec:polar_parallel_velocities}) both restricted to Core and \ac{SOL} region. After 80,000 iterations a steady state is reached.}
 \end{figure}
 
 
@@ -67,7 +67,7 @@ The turbulent flow is calculated as it is defined in \autoref{sec:simulation_qua
 \section{Zonal Potential}
 
 The same procedure of the previous section is applied to the zonal potential, zonal flow and zonal flow potential (vorticity). The results are shown in \autoref{fig:zonal-potential-low-all}.\\
-They form two groups: The non linearized model and the third linearization share distinct features as well as the first and the second. Since the linearization specifically targets the gradient of the densities which is the strongest close to the core plasma, the greatest difference between the linearizations and the non linearized model is observed there. One has to note that on the boundaries numerical artifacts play a major role leading to artificial density gradients explaining for instance the \textit{bump} on the $x_L$ boundary.
+They form two groups: The non linearized model and the third linearization share distinct features as well as the first and the second. Since the linearization specifically targets the gradient of the densities which is the strongest close to the core plasma, the greatest difference between the linearizations and the non linearized model is observed there. One has to note that on the boundaries numerical artifacts play a major role leading to artificial density gradients explaining for instance the \textit{bump} on the $x_L$ boundary. Looking at the zonal flow the first group generally produces a lower zonal flow away from the boundaries.
 
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/zonal_potential_low.pdf}
@@ -105,10 +105,11 @@ The same procedures from the previous sections are applied to a finer grid (8x25
 
 \section{Numerical stability}
 Not thoroughly measured was the stability of the simulation but still some information will be presented here. For example if one increases the magnetic curvature to 0.05 for the lower resolution grid (leading to stronger turbulence) only the non linearized model is numerical stable. One has to deal with high gradients at the boundaries which seem to be a greater problem for the linearized models. 
-Furthermore if the resolution is increased the $\Delta t$ has to be decreased but the non linearized model is still stable for higher $\Delta t$'s whereas the linearizations are much more sensitive to an increase of the resolution and need smaller $\Delta t$'s. It seems that the \ac{CFL} limit is generally lower for the linearized models.
+Furthermore if the resolution is increased the $\Delta t$ has to be decreased but the non linearized model is still stable for higher $\Delta t$'s whereas the linearizations are much more sensitive to an increase of the resolution and need smaller $\Delta t$'s. It seems that the \ac{CFL} number is higher for the linearized models.
 
 \section{Conclusion}
 
+In this chapter the different linearizations for the Poisson equation have been evaluated for two different parameter sets representing two different resolutions. The first set showed little change between the different linearizations and mostly effected the $x$-boundaries where the highest density gradients are present. There is a small tendency to lower turbulent flows which may be connected to a damping effect of the Debye-Shielding term which the linearizations target. There was also some evidence that the second group\footnote{Linearization 1 and 2} of linearizations is less stable (i. e. the simulation does not converge for a parameter set) than the first group\footnote{Non linearized and 3rd Linearization} which may also suggest a dampening effect. The dampening could slow down the \textit{velocity of change} of for instance density fluctuations and thus reduce the \ac{CFL}-number leading to a more stable simulation. Another possibility could be the higher Zonal-Flow for the second group that may suppress higher gradients in $y$-direction via an increased mixing and thus faster destruction of strong instabilities which in turn could lead to divergences of the solver. This should be investigated further by analysing parameter sets where the second group does not converge but the first does.
 
 
 \end{document}

@@ -43,15 +43,18 @@ In order to characterize the simulation results some quantities are defined. Oft
     (\left<\mathcal{S}\right>_y)_i = \frac{1}{n_y} \sum_{j=0}^{n_y} S_{i, j}
 \end{equation}
 which essentially is the mean value over the y-direction.\\
-We now define these quantities:
+Further on we define these quantities for further evaluation in \autoref{sec:polarization_equation_evaluation}:
 
 \begin{itemize}
     \item $\overline{\Gamma}_{Core} = \alpha \sum_{z, y, x \leq \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in Core Plasma}
     \item $\overline{\Gamma}_{SOL} = \alpha \sum_{z, y, x > \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in \ac{SOL} Plasma}
     \item $\meanxy{\phi_e}$ : \textit{Zonal Potential}
     \item $\partial_x \meanxy{\phi_e}$ : \textit{Zonal Flow}
-    \item $\partial_{xx}\meanxy{\phi_e}$ : \textit{ZOnal Flow Potential / Vorticity}
+    \item $\partial_{xx}\meanxy{\phi_e}$ : \textit{Zonal Flow Potential / Vorticity}
+    \item $E_n \propto \int_{[z,x,y]} \cdot \tau_s \sum_s n_s^2$ : \textit{Full Density}
+    \item $\mathrm{E}_{v_\parallel} = \hat{\epsilon} \cdot \int_{[z,x,y]} \sum_s \mu_s v_{s\parallel} \, dxdydz$ : \textit{Parallel Kinetic Energy}
 \end{itemize}
 
+Here the $\int_{[z,x,y]}$ essentially means the summation of each grid point divided by the total grid size ($n_z \cdot n_x \cdot n_y$).
 
 \end{document}
