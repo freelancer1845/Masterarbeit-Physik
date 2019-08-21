@@ -14,7 +14,7 @@ In both gyrokinetic and gyrofluid models the polarization equation plays a centr
 
 \section{Simulation Setup}
 
-The evaluation of the linearizations is done on a 8x128x512 8x256x1024 grid with $h_x$ and $h_y=1.0|0.5$ respectively. The following parameter set is used for the smaller grid:
+The evaluation of the linearizations is done on a 8x128x512 grid with $h_x$ and $h_y=1.0$. Two parameter sets are tested. The following parameter set is used for the first set and is the evaluation techniques are introduced:
 \begin{itemize}
     \item $\Delta t$: 0.025
     \item $\hat{c}$: 5.0
@@ -26,13 +26,19 @@ The evaluation of the linearizations is done on a 8x128x512 8x256x1024 grid with
     \item core Density: 1.5
     \item edge Density: 0.13
 \end{itemize}
-The simulation is run on \ac{TV} node using the GPU implementations of the \ac{SOR}-solver and gyroaveraging operator. The lower resolution grid has been run for 400.000 iterations and a state snapshot is taken every 20,000 iterations. Due to time and disk space limitations for the higher resolution only 200.000 iterations are done as well as $\Delta t$ is reduced to $0.01$ to stay in the \ac{CFL} limit.
+The simulation is run on \ac{TV} node using the GPU implementations of the \ac{SOR}-solver and gyroaveraging operator. The lower resolution grid has been run for 200.000 iterations and a state snapshot is taken every 20,000 iterations.
 
 \section{Equilibrium State}
-At first the simulation develops strong turbulence and high fluctuations which result in an outburst of "material" (i. e. the total density decreases). Afterwards the simulation approaches a steady state where the state variables only vary little and a typical energy cascade forms. This equilibrium behavior can be seen by looking at the $\mathrm{E} \times \mathrm{B}$-Energy and the total density both restricted to the core and \ac{SOL} plasma (in/out separatrix).\todo{ref to figure} The data suggests that a stable regime is reached after about 120,000 iterations. The idea now is to compare mean values over the simulation time where a equilibrium state has been reached. 
+At first the simulation develops strong turbulence and high fluctuations which result in an outburst of "material" (i. e. the total density decreases). Afterwards the simulation approaches a steady state where the state variables only vary little and a typical energy cascade forms. This equilibrium behavior can be seen by looking for instance at temporal evolution of the parallel kinetic energy (\autoref{sec:polar_parallel_velocities}) or the total density both restricted to the core and \ac{SOL} plasma (in/out separatrix) . The data suggests that a stable regime is reached after about 80,000 iterations. The idea now is to compare mean values over the simulation time where a equilibrium state has been reached. 
+
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth]{pdfs/equilibrium_state_low.pdf}
+    \caption{Temporal evolution of $E_n\propto \int_{[z,x,y} n_e^2 dzdxdy$ and the parallel kinetic energy (see \autoref{sec:polar_parallel_velocities}) both restricted to Core and \ac{SOL} region. After 80,000 iterations a steady state is reached.}
+\end{figure}
+
 
 \begin{blockquote}
-    The errors attached to the mean values are calculated via the standard derivation but do not represent the error of multiple simulations but rather give an idea about the size of fluctuations in the equilibrium state.
+    The errors attached to the mean values are calculated via the standard derivation but do not represent the error of multiple simulations or the response to disturbed input parameters but rather give an idea about the size of fluctuations in the equilibrium state.
 \end{blockquote}
     
 \section{Evaluation}
@@ -48,13 +54,13 @@ The turbulent flow is calculated as it is defined in \autoref{sec:simulation_qua
     \caption{Turbulent flow split into Core and \ac{SOL} region for each linearization. The lighter colors represent the \ac{SOL} parts.}
     \label{fig:turbulent-flow-low}
 \end{figure}
-\autoref{fig:turbulent-flow-low-means} shows the mean value of $\Tflow_{Core}$ and $\Tflow_{SOL}$ from 120,000 to 400,000 iterations. There may be a small indication that $\Tflow_{Core}$ is a little higher for the constant background (local model) linearizations but considering the magnitude of fluctuations (visualized by the error bars) this seems very far fetched. 
+\autoref{fig:turbulent-flow-low-means} shows the mean value of $\Tflow_{Core}$ and $\Tflow_{SOL}$ from 80,000 to 200,000 iterations. There may be a small indication that $\Tflow_{Core}$ is a little higher for the constant background (local model) linearizations but considering the magnitude of fluctuations (visualized by the error bars) this seems very far fetched. 
 
 
 
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/turbulent-flow-low-means.pdf}
-    \caption{Mean values of $\Tflow$ after 120,000 iterations. There is no apparent difference visible.}
+    \caption{Mean values of $\Tflow$ after 80,000 iterations. There is no apparent difference visible.}
     \label{fig:turbulent-flow-low-means}
 \end{figure}
 
@@ -65,11 +71,11 @@ They form two groups: The non linearized model and the third linearization share
 
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/zonal_potential_low.pdf}
-    \caption{Mean values of Zonal Potential, Zonal Flow and Zonal Flow Potential of iteration 120,000-400,000. The shaded areas show for each case fluctuations.}
+    \caption{Mean values of Zonal Potential, Zonal Flow and Zonal Flow Potential of iteration 80,000-200,000. The shaded areas show fluctuations for each case.}
     \label{fig:zonal-potential-low-all}
 \end{figure}
 
-\section{Parallel Velocities}
+\section{Parallel Velocities}\label{sec:polar_parallel_velocities}
 
 Something that is closely connected to the parallel kinetic energy of the system can be defined by:
 \begin{equation}
@@ -79,7 +85,7 @@ As in the previous chapters the integration will be restricted to either Core or
 
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/velocity-energy-low.pdf}
-    \caption{Time evolution of $\mathrm{E}_{v_\parallel}$ for Core and \ac{SOL} region}
+    \caption{Time evolution of $\mathrm{E}_{v_\parallel}$ for Core and \ac{SOL} region. This time in a log-log coordinate system.}
     \label{fig:velocity-energy-low}
 \end{figure}
 
@@ -88,12 +94,12 @@ The comparison shows no major difference but if one looks at the mean values the
 
 \begin{figure}[!htbp]
     \includegraphics[width=\linewidth]{pdfs/velocity-energy-low-means.pdf}
-    \caption{Mean of Velocity Energy from 120,000 to 400,000 iterations}
+    \caption{Mean of Velocity Energy from 80,000 to 200,000 iterations}
     \label{fig:velocity-energy-low-mean}
 \end{figure}
 
 \section{High resolution Data \textit{(2\textsuperscript{nd} parameter set)}}
-The same procedures from the previous sections are applied to a finer grid (8x256x1024). To achieve a stable simulation the artificial viscosities had to be adjusted. As such the results are not one to one comparable but still give an insight on the effects of the linearizations. The data is given in \todo{refer to figures}
+The same procedures from the previous sections are applied to a finer grid (8x256x1024; $h_x = h_y = 0.5$). To achieve a stable simulation the artificial viscosities had to be adjusted. As such the results are not one to one comparable but still give an insight on the effects of the linearizations. The data is given in \todo{refer to figures}
 
 
 
