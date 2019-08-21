@@ -35,16 +35,16 @@ Five sections of the code are measured individually as well as the global execut
     \item Time Stepping (\textit{Calculation of \autoref{eq:karnidakis-scheme}})
     \item External Boundaries (involves gyroaveraging)
 \end{itemize}
-Each data point taken is the mean value out of 20 iterations. In \autoref{fig:k40_gpu_vs_cpu} the complete data set for 8x128x128 on the \ac{K40} and \ac{K40C} systems is presented. It is clearly visible that the first point represents an outlier which is explained by the fact that the initial value for the polarization solver is far off from the solution. It is therefore excluded from further evaluations. 
+Each data point taken is the mean value out of 20 iterations. In \autoref{fig:k40_gpu_vs_cpu} the complete data set for 8x128x256 on the \ac{K40} and \ac{K40C} systems is presented. It is clearly visible that the first point represents an outlier which is explained by the fact that the initial value for the polarization solver is far off from the solution. It is therefore excluded from further evaluations. 
 
 \begin{figure}[!hbtp]
     \centering
     \includegraphics[width=\linewidth]{pdfs/k40CPUvsGPU_full.pdf}
-    \caption{\small Example of performance run. Timings are taken every 20 iterations. Comparison for 8x128x128 on K40 workstation}
+    \caption{\small Example of performance run. Timings are taken every 20 iterations. Comparison for 8x128x256 on K40 workstation}
     \label{fig:k40_gpu_vs_cpu}
 \end{figure}
 
-\autoref{fig:k40_gpu_vs_cpu_mean} shows the mean duration of each step. There is no significant difference visible in "Time Stepping" and "RHS Equations". This is expected since both steps are fully executed on the CPU. One can however already see a performance improvement for the other steps. \autoref{tab:talbe_k40_k40c} presents the quantitative results. The GPU scales better with grid size even though this is a perfectly parallelizeable problem for the CPU where each core calculates one xy-layer in z-direction. Speedups >2 are observed.
+\autoref{fig:k40_gpu_vs_cpu_mean} shows the mean duration of each step. Compared to the other there is only little difference visible in "Time Stepping" and "RHS Equations" between CPU and GPU execution. This is expected since both steps are fully executed on the CPU. One can however already see a performance improvement for the other steps. \autoref{tab:talbe_k40_k40c} presents the quantitative results. The GPU scales better with grid size even though this is a perfectly parallelizeable problem for the CPU where each core calculates one xy-layer in z-direction. Speedups >2 are observed.
 The larger errors associated with the CPU version especially for the polarization may be explained by the scheduler of the operation system. More information on scheduling on linux systems and the negative impact can be found here \cite{Scheduling-Linux}.
 
 \begin{figure}[!hbtp]
@@ -65,11 +65,11 @@ The larger errors associated with the CPU version especially for the polarizatio
     \centering
     \begin{tabular}{c|c|c|c}
         Grid Size & \ac{K40} & \ac{K40C} & GPU Speedup  \\  \hline
-        8x128x128 & $1.89 \pm 0.28$s & $1.32 \pm 0.15$s & $1.43 \pm  0.27$ \\
-        8x128x256 & $3.76\pm0.42$s & $2.38\pm0.19$s & $1.58\pm0.21$ \\
-        8x256x512 & $17.92\pm4.13$s & $8.10\pm0.40$s & $2.21\pm0.52$ \\
-        8x256x1024 & $36.27\pm8.19$s & $16.85\pm0.76$s & $2.15\pm0.50$ \\
-        8x512x1024 & $70.05\pm25.02$s & $40.45\pm2.84$s & $1.73\pm0.63$
+        8x128x128 & $0.99 \pm 0.03$s & $1.05 \pm 0.05$s & $1.07 \pm  0.06$ \\
+        8x128x256 & $1.79\pm0.05$s & $2.41\pm0.10$s & $1.34\pm0.07$ \\
+        8x256x512 & $6.27\pm0.34$s & $17.45\pm0.49$s & $2.78\pm0.17$ \\
+        8x256x1024 & $12.65\pm0.41$s & $37.38\pm1.28$s & $2.96\pm0.14$ \\
+        8x512x1024 & $35.08\pm1.12$s & $110.01\pm3.11$s & $3.14\pm0.13$
     \end{tabular}
     \caption{Execution times of 20 iterations for \ac{K40} and \ac{K40C} and speedup of GPU version against CPU version}
     \label{tab:talbe_k40_k40c}
@@ -86,17 +86,17 @@ almost seven days using the CPU version whereas it only takes two and a half day
 \end{figure}
 
 \subsection{Future Optimizations}
-Using this data one can now determine where it is useful to do future optimizations. If we look at the normalized data from the \ac{GTX} system for a resolution of 8x256x1024 one can see that the most expensive part now became the time stepping (\autoref{fig:gtx_parts}).
+Using this data one can now determine where it is useful to do future optimizations. If we look at the normalized data from the \ac{GTX} system for a resolution of 8x256x1024 one can see that the gyro averaging involved parts as well as the \ac{SOR}-solver are still the most expensive parts (\autoref{fig:gtx_parts}).
 \begin{figure}[!hbtp]
     \centering
     \includegraphics[width=\linewidth]{pdfs/gtx_parts.pdf}
     \caption{\small Execution times of 20 iterations normalized to the full execution time of these 20 iteartions.}
     \label{fig:gtx_parts}
 \end{figure}
-Moving the timestepping to the GPU as well as the \ac{RHS} evaluation would effectively fully move the simulation to GPU execution. Since less data transfers between host memory and device memory would be required this might dramatically increase performance, but data transfers between individual GPU's would be necessary to model the z-direction further increasing code complexity.
+Moving the timestepping to the GPU as well as the \ac{RHS} evaluation would effectively fully move the simulation to GPU execution. Since less data transfers between host memory and device memory would be required this might dramatically increase performance of the GPU involved solvers, but data transfers between individual GPU's would be necessary to model the z-direction further increasing code complexity.
 
 \section{Conclusion}
-Speedups larger than two have been measured which at least reduces the execution time by a factor of two. The speedup is generally better the greater the grid is. This makes it possible to asses whether resolution has an impact on the simulation model. Prior to these optimization's running a simulation with grid size 8x256x1024 could take a week but is now possible in a few days allowing for faster prototyping of adjustments to the model. It should be noted though that magical speedups as they are described in \cite{CUDARedBlack} of >40 are not reached. A major positive effect on CPU performance has vectorization. Most of the simulation code is vectorized by the compiler and as such it runs very well on the CPU. Also the simulation does not have a high memory footprint since a single XY-plane takes about 25MB for a single quantity on a grid of 8x256x1024. Such a plane almost fits into the cache of current CPUs and naturally gives them a high memory bandwidth. Nevertheless it might be worth moving all the code to the GPU which would reduce the overhead associated with copying data from the host memory to the GPU memory. On the other hand this involves much more complex programming and in most cases exceeds the qualifications of a physicist thus making it harder to collaborate or evolve the model and simulation.
+Speedups larger than three have been measured which at least reduces the execution time by a factor of three. The speedup is generally better the greater the grid is. This makes it possible to asses whether resolution has an impact on the simulation model. Prior to these optimization's running a simulation with grid size 8x256x1024 could take a week but is now possible in a few days allowing for faster prototyping of adjustments to the model. It should be noted though that magical speedups as they are described in \cite{CUDARedBlack} of >40 are not reached. A major positive effect on CPU performance has vectorization. Most of the simulation code is vectorized by the compiler and as such it runs very well on the CPU. Also the simulation does not have a high memory footprint since a single XY-plane takes about 25MB for a single quantity on a grid of 8x256x1024. Such a plane almost fits into the cache of current CPUs and naturally gives them a high memory bandwidth. Nevertheless it might be worth moving all the code to the GPU which would reduce the overhead associated with copying data from the host memory to the GPU memory. On the other hand this involves much more complex programming and in most cases exceeds the qualifications of a physicist thus making it harder to collaborate or evolve the model and simulation.
 
 
 
