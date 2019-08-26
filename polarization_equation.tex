@@ -99,7 +99,56 @@ The comparison shows no major difference but if one looks at the mean values the
 \end{figure}
 
 \section{High resolution Data \textit{(2\textsuperscript{nd} parameter set)}}
-The same procedures from the previous sections are applied to a finer grid (8x256x1024; $h_x = h_y = 0.5$). To achieve a stable simulation the artificial viscosities had to be adjusted. As such the results are not one to one comparable but still give an insight on the effects of the linearizations. The data is given in \todo{refer to figures}
+The same procedures from the previous sections are applied to a finer grid (8x256x1024; $h_x = h_y = 0.5$). One has to account for a higher resolution by reducing $\Delta t$ to stay in the \ac{CFL} limit. It is also expected that the perpendicular viscosity has to be adjusted to account for the higher resolution in the perpendicular plane because the finer grid now allows higher wave numbers. \newline
+\todo{Understand this derivation....}The perpendicular viscosity is realized using the fourth derivative in $x$ and $y$ direction.. \newline
+To get a one to one mapping from the lower resolution to the higher resolution turned out to be very difficult because the higher resolution has a great negative impact on the stability. In the following sections two parameter sets are presented where the first tries to achieve a mapping from the lower resolution to the higher and the second one represents a new parameter set with higher viscosities.
+
+\subsection{1\textsuperscript{st} Parameter Set High Resolution}
+This parameter set should actually represent resolution scaling but to achieve a stable set it was necessary to reduce $\Delta t$ to $0.001$. Now it would have been necessary to run the simulation for a lot longer time but this was not done here because when looking at the data after 200,000 iterations numerical artifacts are already visible.\newline
+For this set only $\Delta t$ and $\nu_\perp = 0.001375$ where changed.\newline
+The mean values were taken from iteration 160,000 to 200,000.
+\autoref{fig:density-velocity-high-wrong} shows the evolution of full density and velocity. Here one already sees that something unexpected is happening with linearization two. Also some kind of resonance is visible in the parallel kinetic energy. This probably arises from the small timestep for which the timestepper is not stable anymore.
+
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth]{pdfs/0-11_0-001375/density_vs_velocity.pdf}
+    \label{fig:density-velocity-high-wrong}
+    \caption{Full density and parallel energy for the 1\textsuperscript{st} parameter set at a higher resolution.}
+\end{figure}
+
+\autoref{fig:zonal_profiles-high_wrong} shows the zonal profiles but here the outlier linearization two is clearly visible. Considering the instable nature of this parameter set it is discarded further on and was only presented to show the difficulties involved with resolution scaling for this model and simulation.
+
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth]{pdfs/0-11_0-001375/zonal_profiles.pdf}
+    \label{fig:zonal_profiles-high_wrong}
+    \caption{Zonal profiles for the 1\textsuperscript{st} parameter set at a higher resolution.}
+\end{figure}
+
+\subsection{2\textsuperscript{nd} Parameter Set}
+A second parameter set was evaluated where $\nu_\parallel = 0.4$ and $\nu_\perp = 0.06$. These parameters produce a stable simulation for the higher resolution at $\Delta t = 0.01$. Only the zonal profiles (\autoref{fig:zonal_profiles-high_good}), values for the turbulent flow (\autoref{fig:turbulent-flow-means-high_good}) and the parallel kinetic energy (\autoref{fig:velocity-energy-means-high_good}) are presented here. 
+
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/zonal_profiles.pdf}
+    \caption{Zonal profiles for the 2\textsuperscript{nd} parameter set.}
+    \label{fig:zonal_profiles-high_good}
+\end{figure}
+
+In this case the Zonal Potential profile shows a strongly differing behavior for linearization three. For Zonal Flow and Zonal Flow potential this has a strong effect on the region around the separatrix ($n_x\approx 128$). But excluding the Zonal Potential the two groups are visible again.
+
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/turbulent_flow_means.pdf}
+    \caption{Mean of turbulent flow from iteration 160,000 to 200,000 for the 2\textsuperscript{nd} parameter set.}
+    \label{fig:turbulent-flow-means-high_good}
+\end{figure}
+
+\begin{figure}[!hbtp]
+    \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/velocity_energy_means.pdf}
+    \caption{Mean of parallel kinetic energy from iteration 160,000 to 200,000 for the 2\textsuperscript{nd} parameter set.}
+    \label{fig:velocity-energy-means-high_good}
+\end{figure}
+
+When looking at the turbulent flow and the parallel kinetic energy an inversion in respect to the first parameter set happens where the first group now generates higher values and the second group generates lower values. Since this is strongly visible in the parallel kinetic energies this is most likely connected to the change of $\nu_\parallel$. Another option would be the change of resolution.\newline
+For this parameter set the differences between the linearizations are generally more significant and for example the $\left< \overline{\Gamma} \right>$ in the Core region for the non linearized solver is double the magnitude of the linearization one.
+
 
 
 
@@ -109,7 +158,7 @@ Furthermore if the resolution is increased the $\Delta t$ has to be decreased bu
 
 \section{Conclusion}
 
-In this chapter the different linearizations for the Poisson equation have been evaluated for two different parameter sets representing two different resolutions. The first set showed little change between the different linearizations and mostly effected the $x$-boundaries where the highest density gradients are present. There is a small tendency to lower turbulent flows which may be connected to a damping effect of the Debye-Shielding term which the linearizations target. There was also some evidence that the second group\footnote{Linearization 1 and 2} of linearizations is less stable (i. e. the simulation does not converge for a parameter set) than the first group\footnote{Non linearized and 3rd Linearization} which may also suggest a dampening effect. The dampening could slow down the \textit{velocity of change} of for instance density fluctuations and thus reduce the \ac{CFL}-number leading to a more stable simulation. Another possibility could be the higher Zonal-Flow for the second group that may suppress higher gradients in $y$-direction via an increased mixing and thus faster destruction of strong instabilities which in turn could lead to divergences of the solver. This should be investigated further by analysing parameter sets where the second group does not converge but the first does.
+In this chapter the different linearizations for the Poisson equation have been evaluated for two different parameter sets representing two different resolutions. The first set showed little change between the different linearizations and mostly effected the $x$-boundaries where the highest density gradients are present. There is a small tendency to lower turbulent flows which may be connected to a damping effect of the Debye-Shielding term which the linearizations target. There was also some evidence that the second group\footnote{Linearization 1 and 2} of linearizations is less stable (i. e. the simulation does not converge for a parameter set) than the first group\footnote{Non linearized and 3rd Linearization} which may also suggest a dampening effect. The dampening could slow down the \textit{velocity of change} of for instance density fluctuations and thus reduce the \ac{CFL}-number leading to a more stable simulation. Another possibility could be the higher Zonal-Flow for the second group that may suppress higher gradients in $y$-direction via an increased mixing and thus faster destruction of strong instabilities \footnote{Generally the solver converges worse for higher gradients.}. This should be investigated further by analyzing parameter sets where the second group does not converge but the first does.
 
 
 \end{document}
