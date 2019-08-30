@@ -4,7 +4,7 @@
 
 
 Since a simulation is inherently a \textit{stateful} application Object-Oriented-Programming is mostly used where the equations and solvers are modeled as objects containing properties \textit{(parameters, last result...)} and methods for iterating or solving. This strictly enforces separation of concern where each object only encapsulate the parameters it needs for its evaluation. Global objects like the \textbf{global Current $\vec{J}$} are passed around as parameters.\newline
-The first step in coding the simulation was to define what can be modeled as a separate object. Since the previous version of the simulation code on which the code originating from this master thesis is based on \todo{Refere to TOEFEL code} had no separate structuring into components this had to be done starting from zero.\newline
+The first step in coding the simulation was to define what can be modeled as a separate object. Since the previous version of the simulation code on which the code originating from this master thesis is based on\footnote{A numerical description to the originating code may be found in reference \cite{Kendl_2015-FirstCode}} had no separate structuring into components this had to be done starting from zero.\newline
 Some of the objects that are chosen to be \textit{independent} components are listed here:
 % \begin{blockquote}
   

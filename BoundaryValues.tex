@@ -2,7 +2,7 @@
  
 \begin{document}
 
-To treat the domain boundaries numerically ghost cells are implemented. Currently the the simulation needs two ghost cells in every direction.
+To treat the domain boundaries numerically ghost cells are implemented. Currently the simulation needs two ghost cells in every direction.
 
 \subsection{X-Direction}
 For the densities the following boundary conditions are employed:
@@ -19,10 +19,10 @@ For the potential a special boundary condition is employed:
     \phi_e(x) = 0 \qquad &\colon for \, x = 0\\
     \partial_x\phi_e(x) = 0 \qquad &\colon for \, x = x_L \label{eq:boundary-potential-right}
 \end{align}
-The first condition fixes the absolute value of the potential and is necessary for the numerical solver to converge. This can be seen as a Coulomb gauge. This fixing may artificially create high gradients at the $x=0$ boundary and thus one needs to extend the boundary conditions of the densities into to the domain. The second condition forces zero gradients in x-direction on the $x=x_L$ boundary. Since only the gradient of the potential appears as driving term in the equations those conditions for the potential move artificial dynamics to the left core region where they are easier to handle. 
+The first condition fixes the absolute value of the potential and is necessary for the numerical solver to converge. This can be seen as a Coulomb gauge. This fixing may artificially create high gradients at the $x=0$ boundary and thus one needs to extend the boundary conditions of the densities into the domain. The second condition forces zero gradients in x-direction on the $x=x_L$ boundary. Since only the gradient of the potential appears as driving term in the equations those conditions for the potential move artificial dynamics to the left core region where they are easier to handle. 
 
 \subsection{Y-Direction}
-In Y-Direction (which is perpendicular to X but not in toroidal direction) closed boundary conditions are implemented. One of the consequences is that there is an \textit{in and out flow} of vortices simulating turbulence incoming from the not simulated area of the poloidal slice. The length of Y-Direction needs to be chosen carefully such that vortices that are mirrored to the opposite do not interfere with themselves and that all important modes are possible (4x times x size) \cite{ScottFluxTube} \cite{ScottComputationMagneticallyConfinedPlasmas}.
+In Y-Direction (which is perpendicular to X and $\mathrm{B}$ but not exactly in poloidal direction) closed boundary conditions are implemented. One of the consequences is that there is an \textit{in and out flow} of vortices simulating turbulence incoming from the not simulated area of the poloidal slice. The length of Y-Direction needs to be chosen carefully such that vortices that are mirrored to the opposite do not interfere with themselves and that all important modes are possible (4x times x size) \cite{ScottFluxTube} \cite{ScottComputationMagneticallyConfinedPlasmas}.
 \subsection{Z-Direction}
 In Z-Direction there is a differentiation whether the X-coordinate lies in/on or outside the separatrix (last closed magnetic field line/flux surface).
 \paragraph{In/On Separatrix}
