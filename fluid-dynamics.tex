@@ -24,37 +24,48 @@ yields the following pressure-free formulation of the Navier-Stokes equations.
 
 \begin{align}
     \partial_t \xi &= \left( \partial_x \psi \partial_y \xi - \partial_y \psi \partial_x \xi  \right) + \Delta \xi\\
-    \partial_t \xi &= - \left[\xi, \psi\right] + \Delta \xi
+    \partial_t \xi &= - \left[\xi, \psi\right] + \Delta \xi \label{eq:vorticity-streamline-potential} \\
 \end{align}
 
-Now we can compare this to the moment equations written down earlier and identify the streamline potential $\psi$ with the electric potential and the vorticity $\xi$ with density or velocity. This only serves as motivation to use terminology from flow equations. We can now define turbulent and zonal flow in the following way:
+In a $\delta$f framework and without thermal effects ($\tau_i = 0$) the evolution equations for the (gyro-averaged) densities (\autoref{eq:electron_density} and \autoref{eq:ion_density}) can be combined (considering the charge of the species $z_s$) and transformed into  \autoref{eq:vorticity-streamline-potential} by using a $\delta$f form of the polarization equation (\autoref{eq:polarization}).\newline
+This only serves as motivation to use terminology from flow equations. We can now define turbulent and zonal flow in the following way:
 
 \begin{align}
     \Gamma(z,x,y) &= \partial_y \phi_e :\, Turbulent\,Flow\\
     \Lambda(z,x,y) &= \partial_x \phi_e :\, Poloidal\,Flow
 \end{align}
 
-Here the turbulent flow gives us information on how much of our quantities is transported outwards into the \ac{SOL} and the poloidal flow represents perpendicular (to the magnetic field) transport parallel to the separatrix. They are connected to the perpendicular velocities via the Lorentz-force since $E = -\nabla \phi$.
+Here the turbulent flow gives us information on how much of our quantities is transported outwards into the \ac{SOL} by $\mathrm{E}\times\mathrm{B}$ convection and the poloidal flow represents perpendicular (to the magnetic field) transport parallel to the separatrix.
 
 \subsection{Simulation Quantities}\label{sec:simulation_quantities}
 
-In order to characterize the simulation results some quantities are defined. Often we are interested in the radial profile of our quantities thus we define the radial profile of a quantity $\mathcal{S}$, in discretized matrix form, as:
+
+
+In order to characterize the simulation results some quantities are defined. Often we are interested in the radial profile of our quantities thus we define the radial profile of a quantity $\mathcal{A}$, as:
 \begin{equation}
-    (\left<\mathcal{S}\right>_y)_i = \frac{1}{n_y} \sum_{j=0}^{n_y} S_{i, j}
+    \left<\mathcal{A}\right>_y = \frac{1}{L_y} \int_{[y]} A(z,x,y) \, dy
 \end{equation}
-which essentially is the mean value over the y-direction.\\
-Further on we define these quantities for further evaluation in \autoref{sec:polarization_equation_evaluation}:
+which essentially is the mean value over the y-direction,
+and the zonal profile as:
+\begin{equation}
+    \left<\mathcal{A}\right>_{z, y} =\frac{1}{L_yL_z} \int_{[z, y]} A(z,x,y) \, dzdy
+\end{equation}
+Here $[z,x,y]$ should represent the full domain and $[z,y]$ the subdomain $[L_z \times L_y]$. Further on $S$ is defined as the separatrix position in $x$-direction to define two subsets of the full domain by $[z,y,x\leq S]$ as the core region and $[z,y,x > \mathcal{S}]$ as the \ac{SOL} region.
+
+
+
+We now define these quantities for further evaluation in \autoref{sec:polarization_equation_evaluation}:
 
 \begin{itemize}
-    \item $\overline{\Gamma}_{Core} = \alpha \sum_{z, y, x \leq \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in Core Plasma}
-    \item $\overline{\Gamma}_{SOL} = \alpha \sum_{z, y, x > \mathcal{S}} \Gamma(z,x,y)$ : \textit{Turbulent Flow in \ac{SOL} Plasma}
+    \item $\overline{\Gamma}_{Core} \propto  \left<\Gamma\right>_{z,y, x \leq \mathcal{S}}$ : \textit{Turbulent Flow in Core Plasma}
+    \item  $\overline{\Gamma}_{Core} \propto  \left<\Gamma\right>_{z,y, x > \mathcal{S}}$ : \textit{Turbulent Flow in \ac{SOL} Plasma}
+    \item $\Gamma_{Core}^*(x) \propto \left<\Tilde{n}_s \cdot \Gamma\right>_{z,y}$ : \textit{Turbulent Flux at $x$}
     \item $\meanxy{\phi_e}$ : \textit{Zonal Potential}
     \item $\partial_x \meanxy{\phi_e}$ : \textit{Zonal Flow}
-    \item $\partial_{xx}\meanxy{\phi_e}$ : \textit{Zonal Flow Potential / Vorticity}
-    \item $E_n \propto \int_{[z,x,y]} \cdot \tau_s \sum_s n_s^2$ : \textit{Full Density}
-    \item $\mathrm{E}_{v_\parallel} = \hat{\epsilon} \cdot \int_{[z,x,y]} \sum_s \mu_s v_{s\parallel} \, dxdydz$ : \textit{Parallel Kinetic Energy}
+    \item $\partial_{xx}\meanxy{\phi_e}$ : \textit{Zonal Vorticity}
+    \item $E_n \propto \left< \tau_s \sum_s n_s^2 \right>_{z, x, y,}$ : \textit{Full Density weighted by temperature ratio}
+    \item $\mathrm{E}_{v_\parallel} = \hat{\epsilon} \cdot \left<\sum_s \mu_s v_{s\parallel} \right>_{z, x, y}$ : \textit{Parallel Kinetic Energy}
 \end{itemize}
 
-Here the $\int_{[z,x,y]}$ essentially means the summation of each grid point divided by the total grid size ($n_z \cdot n_x \cdot n_y$).
 
 \end{document}

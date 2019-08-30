@@ -7,12 +7,12 @@ A reduced Flux-Tube coordinate system is employed.
 The coordinate system in the simulation code has the letters $z$ $x$ and $y$. They map to the following coordinates as they are introduced in \cite{doi:10.1063/1.1335832}.
 \begin{itemize}
     \item $x = r - a$   (i. e. radial distance)
-    \item $y = q\theta - \xi$ (i. e. shear shifted (by $q\theta$) poloidal angle)
-    \item $z = \theta$ (i. e. torodial angle/flux surfaces)
+    \item $y = q\theta - \xi$ (i. e. shear shifted (by $q\theta$) perpendicular angular ($\xi \perp r \land \theta$))
+    \item $z = \theta$ (i. e. coordinate parallel to $\mathrm{B}$ mapped on the poloidal coordinate $\theta$ - follows a magnetic field line)
 \end{itemize} 
-where $a:=minor\, Radius$, $\xi \in [0,1]$, $\theta \in [-\pi,\pi]$ and $\theta = 0$ is the magnetic surface at the \textit{outboard-midplane}.\\
+where $a:=minor\, Radius$, $\xi \in [0,1]$, $\theta \in [-\pi,\pi]$ and $\theta = 0$ is the ploidal angle at the \textit{outboard-midplane}.\\
 Thus if we chose $z=[0,8]$ we have eight $x-y$ simulation planes evenly distributed around the torus following the magnetic field lines (i. e. field-aligned).The deformation of the $x-y$ planes is accounted for by the shift-parameter which influences the parallel derivatives \cite{ScootShiftedMetric}.\newline
-It is noteworthy that the $y$ coordinate doesn't actually cover the full poloidal disc. This might seem counter intuitive but as is show in \cite{ScottFluxTube} a carefully set of modes may be \textit{picked} out that covers the turbulence we are interested in. In the reference this is done by the analysis of the fourier decomposition of a general \textit{physical quantity} that obeys continuity constraints in the geometry (for instance the electron density $n_e$).
+It is noteworthy that the $y$ coordinate doesn't actually cover the full poloidal disc. This might seem counter intuitive but as is show in \cite{ScottFluxTube} a carefully set of modes may be \textit{picked} out that covers the turbulence we are interested in. In the reference this is done by the analysis of the Fourier decomposition of a general \textit{physical quantity} that obeys continuity constraints in the geometry (for instance the electron density $n_e$).
 This constraint on the allowed wavelengths (modes) justifies the use of a Flux-Tube coordinate system where the \textit{Tube} follows a magnetic field line around the torus and does not cover the entire flux surface. Therefore the simulation doesn't cover a complete torus but only models a smaller region that covers large scale $k_\parallel$ modes (parallel to the magnetic field) and small scale $k_\perp$ modes (perpendicular to the magnetic field). Using this reduced simulation area prevents the possible introduction of non physical modes in parallel direction and reduces computational complexity.
 
 

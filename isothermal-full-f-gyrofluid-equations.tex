@@ -18,7 +18,7 @@ The equations are stated without proper derivation (a mathematical derivation ca
     }^{\parallel \, Current\,\, Divergence}
     \overbrace{
     + \nu_\parallel \nabla_\parallel^2\Tilde{n}_e
-    - \nu_\perp \Delta^2_\perp\Tilde{n}_e
+    - \nu_\perp \nabla^4_\perp\Tilde{n}_e
     }^{Artificial\,\, Viscosities}
     \label{eq:electron_density}
     \\
@@ -28,15 +28,15 @@ The equations are stated without proper derivation (a mathematical derivation ca
     - \mathcal{K}(\Tilde{\psi_i})
     - \frac{1}{B(z)}\nabla_\parallel (v_{i\parallel} N_i)
     + \nu_\parallel \nabla_\parallel^2\Tilde{N}_i
-    - \nu_\perp \Delta^2_\perp\Tilde{N}_i \label{eq:ion_density}
+    - \nu_\perp \nabla^4_\perp\Tilde{N}_i \label{eq:ion_density}
 \end{align}
 
 where
 
 \begin{align}
     \mathcal{K}(\lambda) &= (\kappa_x \partial_x + \kappa_y \partial_y)\,\lambda\\
-    \kappa_x &= mcv \cdot sin(\theta)\\
-    \kappa_y &= mcv \cdot cos(\theta) + shear\\
+    \kappa_x &= \mathcal{K}_0 \cdot sin(\theta)\\
+    \kappa_y &= \mathcal{K}_0 \cdot cos(\theta) + shear\\
     \left[A, B\right]_\perp &= \partial_x A \cdot \partial_y B - \partial_x B \cdot \partial_y A\\
     \nabla_\parallel \lambda &= \Tilde{\partial_{z}} \lambda
 \end{align}
@@ -44,38 +44,48 @@ where
     \item $\Tilde{\partial_{z}}$ represents the shear-shifted derivative in z-direction.
     \item $\Tilde{X} := ln(X)$
     \item $B(z) := $ Magnetic-Field in z-plane
+    \item $\delta := $ Drift scale parameter $ = \frac{\rho_s}{L_n}$ 
+    \item $\rho_s := $ Drift-scale length
+    \item $L_n :=$ Density gradient length in x-Direction
+    \item $\Psi = \Gamma \phi := $ Gyro-averaged Potential
 \end{itemize}
 
 
-\autoref{eq:electron_density} represents the evolution of the electron density field.
-\autoref{eq:ion_density} represents the evolution of the gyrocenter density of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected ($m_e << m_i$, $z_e = z_i$). \newline
+\autoref{eq:electron_density} represents the evolution of the electron density field $n_e$.
+\autoref{eq:ion_density} represents the evolution of the gyrocenter density $N_i$ of gyro-averaged species (i. e. ions). Since the electrons gyro-radius is small compared to the ion gyro-radius, the effects of electron gyration can be neglected ($m_e << m_i$, $z_e = z_i$). \newline
 The last two terms in both equations are needed for numerical stability of our schemes but may be regarded as sinks.
 
 
 \subsection{Parallel Velocity Equations}
-For the velocities only the parallel part needs to be solved explicitly. The perpendicular part is purely $\mathrm{E}\times \mathrm{B}$ convection which is contained in the electric potential $\phi$. This is a result of the \textit{drift approximation} where the strong magnetic field in parallel direction forces the particles to a fast gyration around the field lines. The perpendicular velocity can then be calculated from the electric and magnetic field considering the Lorentz Force and is decoupled from the parallel velocity.
+For the velocities only the parallel part needs to be solved explicitly. The perpendicular part is purely $\mathrm{E}\times \mathrm{B}$ convection which is contained in the electric potential $\phi$. This is a result of the \textit{drift approximation} where the strong magnetic field in parallel direction forces the particles to a fast gyration around the field lines. The perpendicular velocity can then be calculated from the electric and magnetic field considering the Lorentz Force and is decoupled from the parallel velocity. This effect is called the "E-cross-B" drift velocity:
+\begin{align}
+    v_{\mathrm{E}\times\mathrm{B}} &= \frac{1}{\mathrm{B}^2} (\mathrm{B} \times \nabla \phi) \\
+    &= - \frac{1}{\mathrm{B}^2} (\mathrm{B} \times \mathrm{E}) = \frac{1}{\mathrm{B}^2} (\mathrm{E} \times \mathrm{B}) \\
+    &\approx v_\perp
+\end{align}
 
+The evolution equations for the parallel velocities are the following:
 
 \begin{align}
 \begin{split}
-    \alpha_e &=  -\frac{\mu_e \hat{\epsilon}}{\delta} \left[v_{e\parallel}, \phi_\perp\right]_\perp
+    \partial_t \alpha_e &=  -\frac{\mu_e \hat{\epsilon}}{\delta} \left[v_{e\parallel}, \phi_\perp\right]_\perp
     - 2 \cdot \tau_e \mu_e \hat{\epsilon} \cdot \mathcal{K}( v_{e\parallel})
     - 2 \cdot \tau_e^2 \mu_e \hat{\epsilon} \cdot \mathcal{K}(\Tilde{n}_e)
     - 0.5 \cdot \tau_e \mu_e \hat{\epsilon} \cdot \mathcal{K}( \phi)\\
     & \quad - \nabla_\parallel (\phi + \tau_e n_e)
-    - \hat{c} \cdot \mathrm{J}
+    - \hat{C} \cdot \mathrm{J}
     + \nu_\parallel \nabla_\parallel^2\Tilde{\alpha}_e 
-    - \nu_\perp \Delta^2\Tilde{\alpha}_e \label{eq:electron_velocity}
+    - \nu_\perp \nabla^4\Tilde{\alpha}_e \label{eq:electron_velocity}
 \end{split}\\
 \begin{split}
-    \alpha_i &= -\frac{\mu_i \hat{\epsilon}}{\delta}  \left[v_{i\parallel}, \phi_\perp\right]_\perp
+    \partial_t \alpha_i &= -\frac{\mu_i \hat{\epsilon}}{\delta}  \left[v_{i\parallel}, \phi_\perp\right]_\perp
     - 2 \cdot \tau_i \mu_i \hat{\epsilon} \cdot \mathcal{K}(v_{i\parallel})
     - 2 \cdot \tau_i^2 \mu_i \hat{\epsilon} \cdot \mathcal{K}(N_i)
     - 0.5 \cdot \tau_i \mu_i \hat{\epsilon} \cdot \mathcal{K}(\psi)\\
     &\quad - \nabla_\parallel (\psi + \tau_i N_i)
-    - \hat{c} \cdot  \mathrm{J}
+    - \hat{C} \cdot  \mathrm{J}
     + \nu_\parallel\nabla_\parallel^2\Tilde{\alpha}_i 
-    - \nu_\perp \Delta^2\Tilde{\alpha}_i \label{eq:ion_velocity}
+    - \nu_\perp \nabla^4\Tilde{\alpha}_i \label{eq:ion_velocity}
 \end{split}
 \end{align}
 
@@ -83,8 +93,12 @@ where ($s$ denotes electron and ion species)
 
 \begin{itemize}
     \item $\alpha_s := \mu_s \hat{\epsilon} \cdot v_{s\parallel} + \hat{\beta} \cdot A_{\parallel}$
-    \item $\mathrm{J} := \sum_s z_s \cdot n_s \cdot v_{s\parallel}$
-    \item $z_s :=$ charge of species particles (i. e. -1 for electrons)
+    \item $\mathrm{J} := \sum_s Z_s \cdot n_s \cdot v_{s\parallel}$
+    \item $Z_s :=$ charge of species particles (i. e. -1 for electrons)
+    \item $\mu_s := \frac{m_s}{Z_s m_i}\colon$ mass ratio (species "$s$" to primary ions)
+    \item $\tau_s := \frac{T_s}{Z_s T_e}\colon$ temperature ratio (species "$s$" to electrons) 
+    \item $\hat{\epsilon} := \frac{qR}{L_\perp^2}\colon$ geometry parameter
+    \item $\hat{C} := $ Parallel electron "Collisionality" ($\nu$) parameter
 \end{itemize}
 
 As a simplification we assume $\hat{\beta} \approx 0$ and thus Amperes Law is not stated here. Nonetheless to closely represent the equations implemented in the simulation code the $\alpha$-notation is used here.
@@ -92,14 +106,9 @@ As a simplification we assume $\hat{\beta} \approx 0$ and thus Amperes Law is no
 \subsection{Polarization Equation}
 
 \begin{align}
-    \nabla \cdot \left( \sum_s \mu_s n_s \right) \nabla \phi &= z_e n_e + \sum_i z_i \, \cdot \, N_i \label{eq:polarization}
+    \nabla \cdot \left( \sum_s \mu_s n_s \nabla \phi  \right) &= z_e n_e + \sum_i z_i \, \cdot \, N_i \label{eq:polarization}
 \end{align}
-The polarization equation connects the individual species by the quasi-neutrality condition for a plasma. This is a non linear partial differential equation of second order. To handle the non linearity a typical assumption is that $\sigma := \sum_s \mu_s n_s$ can be expanded in space and or time ($\sigma \approx \sigma_0 + \sigma_1 \epsilon + ...$ where $\epsilon$ represents the Larmor radius length scale) and that $\sigma_1 \epsilon \ll \sigma_0$ as well as $\sigma_0$ is constant. Three different simplifications of that kind will be presented in \autoref{sec:polarization-linearizations} and evaluated in \autoref{sec:polarization_equation_evaluation}. 
-
-
-\begin{blockquote}
-    The non-linearity term on the left hand side is also called the "Debye-Shielding" term.
-\end{blockquote}
+The polarization equation connects the individual species by the quasi-neutrality condition for a plasma. This is a non linear partial differential equation of second order. To handle the non linearity a typical assumption is that $\sigma := \sum_s \mu_s n_s$ can be expanded in space and or time ($\sigma \approx \sigma_0 + \sigma_1 \epsilon + ...$ where $\epsilon$ represents the Larmor radius length scale) and that $\sigma_1 \epsilon \ll \sigma_0$ as well as $\sigma_0$ is constant. Three different simplifications of that kind will be presented in \autoref{sec:polarization-linearizations} and evaluated in \autoref{sec:polarization_equation_evaluation}. For the derivation one starts with the quasi-neutrality constraint for a plasma and transforms to the gyro-averaged densities for the heavier ions. By approximating the gyro-averaging operator one arrives at the given equation that has similarities to the electromagnetic poisson equation but has a different origin.
 
 \subsection{Gyro-Averaging Operator}
 Since we have a Gyrofluid model we need a transformation from the actual quantities into the gyro averaged quantities. In our case we only need $\Gamma_1$ and $\Gamma_1^\dagger$. A derivation and further explanation can be found in \cite{HeldDisseration}.
@@ -107,6 +116,9 @@ Since we have a Gyrofluid model we need a transformation from the actual quantit
     \label{eq:gyro-averaging-opeartor}
     \Gamma_1 = \left(1- \frac{1}{2} \rho^2 \nabla_\perp^2\right)^{-1}
 \end{align}
+
+\subsection{Normalization}
+The gyro-averaged densities are normalized by a constant background density to achieve $N_s \sim 1$ ($N_s \leftarrow \frac{N_s}{N_{s0}}$) ($N_e \approx n_e$). The parallel velocities are normalized by $v_{s\parallel} \leftarrow \frac{v_{s\parallel}}{c_s}$ and the time scale is normalized by $\partial_t \leftarrow \frac{\rho_s}{c_s}\partial_t$ where $c_s = \sqrt{\frac{T_e}{m_i}}$ is the sound speed and $\rho_s$ is the drift-scale (\autoref{eq:ion_density} description). The perpendicular part of the domain is normalized in to $\rho_s$ such that a domain with $n_x=128$ and $n_y=512$ represents a physical size of $L_x=128\rho_s$ and $L_y=512\rho_s$ where $\rho_s$ has the order of a few hundred micrometers. This serves as normalization for the perpendicular derivatives. The parallel domain is normalized to $1$ by the circumference $2\pi R$ where $R$ is the major radius of the torus.
 
 
 \section{Approximations of the Polarization Equation} \label{sec:polarization-linearizations}
@@ -130,14 +142,14 @@ In \autoref{eq:general-poisson} we assume $N(x,y, t) \approx \overline{N}_0$ for
 This approximation would be valid if $N(x,y, 0) \approx N(x,y,t)$ and $\nabla N(x,y,0) \approx 0$. In some contexts this is also referred to as  $\delta$-f or \textit{local model} whereas the non linearized form is called a \textit{global model}.
 
 \subsection{Time-independent Radial Background Profile}
-In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t = 0)\right>_y$. This reduces the general poisson equation to:
+In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t = 0)\right>_y$. This reduces the general Poisson equation to:
 \begin{equation}
     \partial_x \left<N(x,t = 0)\right>_y \partial_x \Psi(x,y,t) + \left<N(x,t = 0)\right>_y \partial_{yy} \Psi(x,y,t) = F(x,y,t);
 \end{equation}
 This would be valid if $\partial_y N \approx 0$ and $N(x,y,t) \approx N(x,y, t= 0)$.
 
 \subsection{Time-dependent Radial Background Profile}
-In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t)\right>_y$. This reduces the general poisson equation to:
+In \autoref{eq:general-poisson} we assume $N(x,y,t) \approx \left<N(x,t)\right>_y$. This reduces the general Poisson equation to:
 \begin{equation}
     \partial_x \left<N(x,t)\right>_y \partial_x \Psi(x,y,t) + \left<N(x,t)\right>_y \partial_{yy} \Psi(x,y,t) = F(x,y,t);
 \end{equation}
