@@ -135,28 +135,31 @@ A second parameter set was evaluated where $\nu_\parallel = 0.2$ and $\nu_\perp 
 First the results of the low resolution set are presented.
 
 \begin{figure}[!hbtp]
-    \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/zonal_profiles.pdf}
-    \caption{Zonal profiles for the 2\textsuperscript{nd} parameter set.}
-    \label{fig:zonal_profiles-high_good}
+    \includegraphics[width=\linewidth, height=150px]{pdfs/0-2_0-96/zonal_profiles_100000.pdf}
+    \caption{Zonal profiles for the 2\textsuperscript{nd} parameter set at low resolution ($h_x=h_y=1.0$) averaged over iterations 100,000 to 150,000.}
+    \label{fig:zonal_profiles-low_for_high}
 \end{figure}
 
-In this case the Zonal Potential profile shows a strongly differing behavior for linearization three. For Zonal Flow and Zonal Flow potential this has a strong effect on the region around the separatrix ($n_x\approx 128$). But excluding the Zonal Potential the two groups are visible again.
+The two groups from the previous section are formed again, but this time differences between them are visible. For instance the maximum zonal flow is achieved much close to the separatrix for the first group. 
+
 
 \begin{figure}[!hbtp]
-    \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/turbulent_flow_means.pdf}
-    \caption{Mean of turbulent flow from iteration 160,000 to 200,000 for the 2\textsuperscript{nd} parameter set.}
+    \includegraphics[width=\linewidth, height=150px]{pdfs/0-2_0-96/turbulent_flow_means_100000.pdf}
+    \caption{Mean of turbulent flow from iteration 100,000 to 150,00 for the 2\textsuperscript{nd} parameter set at low resolution ($h_x=h_y=1.0$).}
     \label{fig:turbulent-flow-means-high_good}
 \end{figure}
 
 \begin{figure}[!hbtp]
-    \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/velocity_energy_means.pdf}
-    \caption{Mean of parallel kinetic energy from iteration 160,000 to 200,000 for the 2\textsuperscript{nd} parameter set.}
+    \includegraphics[width=\linewidth, height=150px]{pdfs/0-2_0-96/parallelvelocity_mean_100000.pdf}
+    \caption{Mean of parallel kinetic energy from iteration 100,000 to 150,000 for the 2\textsuperscript{nd} parameter set at low resolution ($h_x=h_y=1.0$).}
     \label{fig:velocity-energy-means-high_good}
 \end{figure}
 
-When looking at the turbulent flow and the parallel kinetic energy an inversion in respect to the first parameter set happens where the first group now generates higher values and the second group generates lower values. Since this is strongly visible in the parallel kinetic energies this is most likely connected to the change of $\nu_\parallel$. Another option would be the change of resolution.\newline
-For this parameter set the differences between the linearizations are generally more significant and for example the $\left< \overline{\Gamma} \right>$ in the Core region for the non linearized solver is double the magnitude of the linearization one.
+Also for the turbulent flow and the parallel kinetic energies the two groups are visible again. As in the previous section the second group produces higher turbulent flows and parallel kinetic energies.\newline
+For this parameter set the differences between the linearizations are generally more significant and for example the $\left< \overline{\Gamma} \right>$ in the Core region for the non linearized polarization equation is double the magnitude of the linearization one.
 
+\subsubsection{High Resoltion (8x256x1024 $h_x = h_y = 0.5$)}
+The 2\textsuperscript{nd} parameter set is no evaluated on a finer grid. This has some implications on the perpendicular hyperviscosity since this term is used to cut off high frequency modes in perpendicular direction. But since now the we have a finer resolution in that direction it is not necessary anymore to cut off these modes. Since we are using the fourth derivative in each direction for each direction we get a factor of 4 (in the Fourier-space) and because of that reduce $\nu_\perp$ by $\frac{1}{16} = \frac{1}{4\cdot4}$ to $\nu_\perp = 0.06$. $\nu_\parallel$ stays untouched since we didn't change the resolution in z-direction \footnote{It should be noted though that through magnetic shearing there could actually be an effect from higher perpendicular resolution on the parallel direction}. All other parameters exactly stay the same.
 
 
 
