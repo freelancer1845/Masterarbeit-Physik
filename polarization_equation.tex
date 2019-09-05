@@ -16,7 +16,7 @@ In both gyrokinetic and gyrofluid models the polarization equation plays a centr
 
 \section{Simulation Setup}
 
-The evaluation of the linearizations is done on a 8x128x512 grid with $h_x$ and $h_y=1.0$. Two parameter sets are tested. The following parameter set is used for the first set and is the evaluation techniques are introduced:
+The evaluation of the linearizations is done on a 8x128x512 grid with $h_x$ and $h_y=1.0$. Two parameter sets are tested. The following parameter set is used for the first par and the evaluation techniques are introduced:
 \begin{itemize}
     \item $\Delta t$: 0.025
     \item $\hat{c}$: 5.0
@@ -126,7 +126,12 @@ The mean values were taken from iteration 160,000 to 200,000.
 \end{figure}
 
 \subsection{2\textsuperscript{nd} Parameter Set}
-A second parameter set was evaluated where $\nu_\parallel = 0.4$ and $\nu_\perp = 0.06$. These parameters produce a stable simulation for the higher resolution at $\Delta t = 0.01$. Only the zonal profiles (\autoref{fig:zonal_profiles-high_good}), values for the turbulent flow (\autoref{fig:turbulent-flow-means-high_good}) and the parallel kinetic energy (\autoref{fig:velocity-energy-means-high_good}) are presented here. 
+A second parameter set was evaluated where $\nu_\parallel = 0.2$ and $\nu_\perp = 0.96$ ($\nu_\perp = 0.06$ for higher resolution). These parameters produce a stable simulation for the higher resolution at $\Delta t = 0.01$. Only the zonal profiles (\autoref{fig:zonal_profiles-high_good}), values for the turbulent flow (\autoref{fig:turbulent-flow-means-high_good}) and the parallel kinetic energy (\autoref{fig:velocity-energy-means-high_good}) are presented here. 
+
+
+\subsubsection{Low Resolution (8x128x512 $h_x=h_y=1.0$)}
+
+First the results of the low resolution set are presented.
 
 \begin{figure}[!hbtp]
     \includegraphics[width=\linewidth, height=150px]{pdfs/0-4_0-06/zonal_profiles.pdf}
