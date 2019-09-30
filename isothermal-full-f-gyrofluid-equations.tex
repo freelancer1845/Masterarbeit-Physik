@@ -43,7 +43,7 @@ where
 \begin{itemize}
     \item $\Tilde{\partial_{z}}$ represents the shear-shifted derivative in z-direction.
     \item $\Tilde{X} := ln(X)$
-    \item $B(z) := $ Magnetic-Field in z-plane
+    \item $B(z) := $ Magnetic-Field strength in z-plane
     \item $\delta := $ Drift scale parameter $ = \frac{\rho_s}{L_n}$ 
     \item $\rho_s := $ Drift-scale length
     \item $L_n :=$ Density gradient length in x-Direction
@@ -57,10 +57,10 @@ The last two terms in both equations are needed for numerical stability of our s
 
 
 \subsection{Parallel Velocity Equations}
-For the velocities only the parallel part needs to be solved explicitly. The perpendicular part is purely $\mathrm{E}\times \mathrm{B}$ convection which is contained in the electric potential $\phi$. This is a result of the \textit{drift approximation} where the strong magnetic field in parallel direction forces the particles to a fast gyration around the field lines. The perpendicular velocity can then be calculated from the electric and magnetic field considering the Lorentz Force and is decoupled from the parallel velocity. This effect is called the "E-cross-B" drift velocity:
+For the velocities only the parallel part needs to be solved explicitly. The perpendicular part is purely $\underline{\mathrm{E}}\times \underline{\mathrm{B}}$ convection which is contained in the electric potential $\phi$. This is a result of the \textit{drift approximation} where the strong magnetic field in parallel direction forces the particles to a fast gyration around the field lines. The perpendicular velocity can then be calculated from the electric and magnetic field considering the Lorentz Force and is decoupled from the parallel velocity. This effect is called the "E-cross-B" drift velocity:
 \begin{align}
-    v_{\mathrm{E}\times\mathrm{B}} &= \frac{1}{\mathrm{B}^2} (\mathrm{B} \times \nabla \phi) \\
-    &= - \frac{1}{\mathrm{B}^2} (\mathrm{B} \times \mathrm{E}) = \frac{1}{\mathrm{B}^2} (\mathrm{E} \times \mathrm{B}) \\
+    v_{\mathrm{\underline{E}}\times\underline{\mathrm{B}}} &= \frac{1}{\mathrm{B}^2} (\underline{\mathrm{B}} \times \nabla \phi) \\
+    &= - \frac{1}{\mathrm{B}^2} (\underline{\mathrm{B}} \times \underline{\mathrm{E}}) = \frac{1}{\mathrm{B}^2} (\underline{\mathrm{E}} \times \underline{\mathrm{B}}) \\
     &\approx v_\perp
 \end{align}
 
@@ -108,7 +108,7 @@ As a simplification we assume $\hat{\beta} \approx 0$ and thus Amperes Law is no
 \begin{align}
     \nabla \cdot \left( \sum_s \mu_s n_s \nabla \phi  \right) &= z_e n_e + \sum_i z_i \, \cdot \, N_i \label{eq:polarization}
 \end{align}
-The polarization equation connects the individual species by the quasi-neutrality condition for a plasma. This is a non linear partial differential equation of second order. To handle the non linearity a typical assumption is that $\sigma := \sum_s \mu_s n_s$ can be expanded in space and or time ($\sigma \approx \sigma_0 + \sigma_1 \epsilon + ...$ where $\epsilon$ represents the Larmor radius length scale) and that $\sigma_1 \epsilon \ll \sigma_0$ as well as $\sigma_0$ is constant. Three different simplifications of that kind will be presented in \autoref{sec:polarization-linearizations} and evaluated in \autoref{sec:polarization_equation_evaluation}. For the derivation one starts with the quasi-neutrality constraint for a plasma and transforms to the gyro-averaged densities for the heavier ions. By approximating the gyro-averaging operator one arrives at the given equation that has similarities to the electromagnetic poisson equation but has a different origin.
+The polarization equation connects the individual species by the quasi-neutrality condition for a plasma. This is a non linear partial differential equation of second order. To handle the non linearity a typical assumption is that $\sigma := \sum_s \mu_s n_s$ can be expanded in space and or time ($\sigma \approx \sigma_0 + \sigma_1 \epsilon + ...$ where $\epsilon$ represents the Larmor radius length scale) and that $\sigma_1 \epsilon \ll \sigma_0$ as well as $\sigma_0$ is constant. Three different simplifications of that kind will be presented in \autoref{sec:polarization-linearizations} and evaluated in \autoref{sec:polarization_equation_evaluation}. For the derivation one starts with the quasi-neutrality constraint for a plasma and transforms to the gyro-averaged densities for the heavier ions. By approximating the gyro-averaging operator one arrives at the given equation that has similarities to the electrostatic Poisson equation but has a different origin.
 
 \subsection{Gyro-Averaging Operator}
 Since we have a Gyrofluid model we need a transformation from the actual quantities into the gyro averaged quantities. In our case we only need $\Gamma_1$ and $\Gamma_1^\dagger$. A derivation and further explanation can be found in \cite{HeldDisseration}.

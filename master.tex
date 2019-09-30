@@ -126,7 +126,7 @@ Faculty for Mathematics, Computer Science and Physics}\\[3ex]
 \medskip
 
 \begin{center}
-\includegraphics[width=3cm]{Logo}
+\includegraphics[width=10cm]{Logo}
 \vspace{1.5cm}
 
 \textbf{\LARGE{Master Thesis}}
@@ -145,7 +145,7 @@ von \par
 
 \begin{tabular}{ll}
   Submission Date:  & \today \\
-  Supervisor: & ------ \\
+  Supervisor: & Assoz. Prof. Dr. Alexander Kendl \\
 \end{tabular}
 
 \newpage
@@ -183,7 +183,7 @@ The content of this thesis consists of three parts and targets the rewrite and o
 \begin{otherlanguage*}{english}
   {\let\clearpage\relax \chapter*{Abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
-The thesis consists of three parts and targets the rewrite and optimization of an existing Full-F Gyrofluid simulation code that models the edge region of a tokamak fusion reactor and the evaluation of linearizations to the Poisson equation originating from the neutrality constraint of a plasma. First the physical and numerical framework of the simulation is stated and then the realization into a simulation code is described. Afterwards different optimizations targeting single core, multi core, GPU and multi GPU are presented. The GPU optimizations are compared to the optimized CPU implementations which show speedups larger than three for the GPU implementations. In the end the Debye-Shielding term of the polarization equation is evaluated for two parameter sets that do not show large and obvious differences for the different grades of linearizations. The differences mostly show in the convergences of the solver but not in the turbulent flow measurements.
+The thesis consists of three parts and targets the rewrite and optimization of an existing Full-F Gyrofluid simulation code that models the edge region of a tokamak fusion reactor and the evaluation of linearizations to the Poisson equation originating from the neutrality constraint of a plasma. First the physical and numerical framework of the simulation is stated and then the realization into a simulation code is described. Afterwards different optimizations targeting single core, multi core, GPU and multi GPU are presented. The GPU optimizations are compared to the optimized CPU implementations which show speedups larger than three for the GPU implementations. In the end the effects of the linearizations for the polarization equation are evaluated for two parameter sets which generally do not show large and obvious differences for the different grades of linearizations.
 \end{otherlanguage*}
 
 
@@ -232,7 +232,7 @@ The simulation is currently limited to the Isothermal Full-F Gyrofluid Equations
 \subfile{numericalMethods}
 
 \chapter{Theory Computer Science}
-The main component of this master thesis was to rewrite an existing code that implemented the previously stated physical model using the numerical framework of the previous chapter. The basis code was developed over a long period of time and became rather complex. The new code is split into components and tries to naturally allow for performance optimizations by exploiting parallelism. Another main object was to write the code in a way that it could be understood and \textit{mapped} to the underlying physical model even by somebody that is not highly experienced in computer science (which is common in physics) without spending a lot of time trying to understand the code. Together with the component approach this should allow the extension of the code without understanding every part of it.\newline
+The main component of this master thesis was to rewrite an existing code that implemented the previously stated physical model using the numerical framework of the previous chapter. The basis code was developed over a long period of time and became rather complex. The new code is split into components and tries to naturally allow for performance optimizations by exploiting parallelism. Another main object was to write the code in a way that it could be understood and \textit{mapped} to the underlying physical model even by somebody who is not highly experienced in computer science (which is common in physics) without spending a lot of time trying to understand the code. Together with the component approach this should allow the extension of the code without understanding every part of it.\newline
 All the code relevant for the simulation is written in C++ and uses templates to be run either in \textit{float} or \textit{double} precision. Choosing C++ as language allows high performance and an easy integration of external libraries (FFTW, Cuda, etc.), also the code may be compiled for a specific architecture giving the compiler the opportunity to optimize in different ways.\newline
 The code has been optimized to run on a single node using OpenMP for CPU parallelism. The polarization equation and the gyroaveraging operator solver (only operate in $XY$-plane) have also been implemented using the CUDA framework to run on a single GPU (though each solver may run on a different GPU on the same node) giving new opportunities for high resolution simulations and faster parameter studies. These optimizations are not strictly coupled to the underlying model and as such may serve as a framework for future extensions of the physical model.\newline
 Data output is handled using HDF5 but an abstract interface was written to extend the output in future versions easily.
