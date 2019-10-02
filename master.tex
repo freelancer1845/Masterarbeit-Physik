@@ -130,21 +130,25 @@ Faculty for Mathematics, Computer Science and Physics}\\[3ex]
 \vspace{1.5cm}
 
 \textbf{\LARGE{Master Thesis}}
+\bigskip\par
+\textbf{\Large{Optimization and Refactoring of a Full-F Gyrofluid Simulation Code and evaluation of linearizations to the Polarization Equation}}
+\bigskip\par
+by \par
+\large{Jascha Riedel}\\
+(Matr.-Nr.: 01636880)
+
+\vspace{1cm}
+
 \medskip\par
-\textbf{\normalsize{zur Erreichung des akademischen Grades}} \\[3ex]
+\normalsize{In Partial Fulfillment
+of the Requirements for the Degree of} \\[3ex]
 \textbf{\Large{Master of Science}}
 \vspace{2cm}
 
-\textbf{\Large{Optimization and Refactoring of a Full-F Gyrofluid Simulation Code and evaluation of linearizations to the Polarization Equation}}
-\bigskip\par
-von \par
-\large{Jascha Riedel}\\
-(Matr.-Nr.: 01636880)
 \end{center}
-\vspace{1cm}
 
 \begin{tabular}{ll}
-  Submission Date:  & \today \\
+  % Submission Date:  & \today \\
   Supervisor: & Assoz. Prof. Dr. Alexander Kendl \\
 \end{tabular}
 
@@ -159,7 +163,9 @@ von \par
 
 
 \begin{quote}
-\emph{Ich erkläre hiermit an Eides statt durch meine eigenhändige Unterschrift, dass ich die vorliegende Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet habe. Alle Stellen, die wörtlich oder inhaltlich den angegebenen Quellen entnommen wurden, sind als solche kenntlich gemacht.
+\emph{Ich erkläre hiermit an Eides statt durch meine eigenhändige Unterschrift, dass ich die vorliegende Arbeit selbständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet habe. Alle Stellen, die wörtlich oder inhaltlich den angegebenen Quellen entnommen wurden, sind als solche kenntlich gemacht.\\
+\\
+Die vorliegende Arbeit wurde bisher in gleicher oder ähnlicher Form noch nicht als Magister-/Master-/Diplomarbeit/Dissertation eingereicht.
 }
 \end{quote}
 \vspace{2.5cm}
@@ -172,16 +178,16 @@ Unterschrift: & & \rule{7cm}{0.4pt}
 \end{flushleft}
 
 \thispagestyle{empty}
-
+\newpage
 \setcounter{page}{1}
 \pagenumbering{Roman}
 
-\chapter*{Zusammenfassung}
-\addcontentsline{toc}{chapter}{Zusammenfassung}
-Die folgende Arbeit besteht aus drei Teilen und beschreibt die Neuformulierung und Optimisierung eines vorhandenen Full-F Gyrofluid Simulations Code, der die Randregion eines Tokamak Fusionsreaktors modelliert, sowie die Evaluierung dreier verschiedener Linearisierungen der Poisson Gleichung, welche durch die Neutralitätsbedinung eines Plasmas gegeben ist.
+% \chapter*{Zusammenfassung}
+% \addcontentsline{toc}{chapter}{Zusammenfassung}
+% Die folgende Arbeit besteht aus drei Teilen und beschreibt die Neuformulierung und Optimisierung eines vorhandenen Full-F Gyrofluid Simulations Code, der die Randregion eines Tokamak Fusionsreaktors modelliert, sowie die Evaluierung dreier verschiedener Linearisierungen der Poisson Gleichung, welche durch die Neutralitätsbedinung eines Plasmas gegeben ist.
 
 
-The thesis consists of three parts and targets the rewrite and optimization of an existing Full-F Gyrofluid simulation code that models the edge region of a tokamak fusion reactor and the evaluation of linearizations to the Poisson equation originating from the neutrality constraint of a plasma. First the physical and numerical framework of the simulation is stated and then the realization into a simulation code is described. Afterwards different optimizations targeting single core, multi core, GPU and multi GPU are presented. The GPU optimizations are compared to the optimized CPU implementations which show speedups larger than three for the GPU implementations. In the end the effects of the linearizations for the polarization equation are evaluated for two parameter sets which generally do not show large and obvious differences for the different grades of linearizations.
+% The thesis consists of three parts and targets the rewrite and optimization of an existing Full-F Gyrofluid simulation code that models the edge region of a tokamak fusion reactor and the evaluation of linearizations to the Poisson equation originating from the neutrality constraint of a plasma. First the physical and numerical framework of the simulation is stated and then the realization into a simulation code is described. Afterwards different optimizations targeting single core, multi core, GPU and multi GPU are presented. The GPU optimizations are compared to the optimized CPU implementations which show speedups larger than three for the GPU implementations. In the end the effects of the linearizations for the polarization equation are evaluated for two parameter sets which generally do not show large and obvious differences for the different grades of linearizations.
 
 \begin{otherlanguage*}{english}
   {\let\clearpage\relax \chapter*{Abstract}}
@@ -195,7 +201,7 @@ The thesis consists of three parts and targets the rewrite and optimization of a
 
 \tableofcontents
 
-\listoffigures
+% \listoffigures
 \chapter*{Acronyms}
 \subfile{acronyms}
 \renewcommand{\baselinestretch}{1.5}\normalsize
@@ -269,10 +275,10 @@ The complete project is saved on the University git server and can be found at \
 
 \newpage
 
-\begin{appendices}
-\subfile{appendix_float_double.tex}
-% \subfile{appendix_computer_science.tex}
-\end{appendices}
+% \begin{appendices}
+% \subfile{appendix_float_double.tex}
+% % \subfile{appendix_computer_science.tex}
+% \end{appendices}
 
 
 \bibliographystyle{unsrt} %apalike

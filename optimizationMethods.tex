@@ -3,6 +3,15 @@
 \begin{document}
 
 
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+    commentstyle=\color{green}, % comment color
+    keywordstyle=\color{blue}, % keyword color
+    stringstyle=\color{red} % string color
+}
+
 \subsection{For Loops}
 A common pattern in the simulation is to iterate over all the grid points.
 This is done using three for-Loops.
@@ -42,30 +51,30 @@ for (int z = domain.g_z; z < domain.n_z + domain.g_z; z++) {
 
 But this poses a problem since now a parallel region is created for every such loop. If $n_z=8$ and there are 8 threads available on the system this is not a big problem. But newer CPU's easily have 16, 32, 64 threads available. Thus parallelizing with OpenMP in this way cannot use all of the available threads. Another option is the newer (OpenMP Specification 4.5) \textit{taskloop} pragma. This is very useful if we have for example four such loops with $n_z=8$ that do not depend on each other \textit{(loop1, loop2, loop3, loop4)}. Each loop is constructed in the following way:
 \begin{lstlisting}
-  #pragma omp taskloop
-  for (int z = domain.g_z; z < domain.n_z + domain.g_z; z++) {
-    for (int x = domain.g_x; x < domain.n_x + domain.g_x; x++) {
-      for (int y = domain.g_y; y < domain.n_y + domain.g_y; y++) {
-         ...
-      }
+#pragma omp taskloop
+for (int z = domain.g_z; z < domain.n_z + domain.g_z; z++) {
+  for (int x = domain.g_x; x < domain.n_x + domain.g_x; x++) {
+    for (int y = domain.g_y; y < domain.n_y + domain.g_y; y++) {
+        ...
     }
   }
+}
 \end{lstlisting}
 
 
 To achieve good parallelization the call structure of theses loops is done in the following way:
 \begin{lstlisting}
-  #pragma omp parallel sections
-  {
-    #pragma omp section 
-      { loop1(); }
-    #pragma omp section
-      { loop2(); }
-    #pragma omp section
-      { loop3(); }
-    #pragma omp section
-      { loop4(); }
-  }
+#pragma omp parallel sections
+{
+  #pragma omp section 
+    { loop1(); }
+  #pragma omp section
+    { loop2(); }
+  #pragma omp section
+    { loop3(); }
+  #pragma omp section
+    { loop4(); }
+}
 \end{lstlisting}
 Now each section uses at first only one thread. But when execution reaches the taskloop construct further threads are \textit{borrowed}. In this case the maximum used threads could be 32 if each iteration of the loops is executed on a single thread.\newline
 
@@ -78,10 +87,10 @@ The code is structured such that theses parallelizations are easily employed. Th
 There are two levels of grid parallelization employed throughout the code. The first level parallelizes in Z direction and the second in X direction. This is handled using a simple macro definition. Every OpenMP parallelized loop has the following macro \textit{guard}:
 
 \begin{lstlisting}
-  #ifdef PARALLELIZE_Z
-  #pragma omp taskloop
-  #endif
-  for (...)
+#ifdef PARALLELIZE_Z
+#pragma omp taskloop
+#endif
+for (...)
 \end{lstlisting}
 This allows for smarter debugging and selective parallelization levels.
 
